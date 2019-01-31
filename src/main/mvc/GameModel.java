@@ -62,8 +62,6 @@ class GameModel implements ActionListener {
 	}
 	
 	private GameObject checkVertHit(double y) {
-//		return checkGroundHit(y);
-//		checkObstacleHit();
 		return null;
 	}
 	
