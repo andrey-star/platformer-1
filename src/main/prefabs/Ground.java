@@ -10,4 +10,13 @@ public class Ground extends CollidableGameObject {
 		super(pos, colliderWidth, colliderHeight, speed, polygon, color);
 	}
 	
+	public boolean doesCollideHor(CollidableGameObject collideWith) {
+		// todo
+		return false;
+	}
+	
+	public boolean doesCollideVer(CollidableGameObject collideWith) {
+		// todo
+		return false;
+	}
 }

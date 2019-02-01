@@ -1,5 +1,7 @@
 package main.mvc;
 
+import main.prefabs.CollidableGameObject;
+import main.prefabs.Player;
 import main.util.Rectangle;
 import main.util.Vector;
 
@@ -51,7 +53,6 @@ public class GameView extends JFrame {
 		Color prev = g.getColor();
 		
 		g.setColor(Color.RED);
-		
 		Rectangle rec = model.player.getCollider().getRectangle();
 		g.drawRect((int) (playerStart.getX() + rec.getX1()), (int) (playerStart.getY() + rec.getY1()), (int) rec.getWidth(), (int) rec.getHeight());
 		
@@ -60,25 +61,21 @@ public class GameView extends JFrame {
 	
 	private void drawPlayer() {
 		Color prev = g.getColor();
-		
-		g.setColor(model.player.getColor());
-		Polygon p = model.player.getPolygon();
+		fillPolygon(model.player);
+		g.setColor(prev);
+	}
+	
+	private void fillPolygon(CollidableGameObject gameObject) {
+		g.setColor(gameObject.getColor());
+		Polygon p = gameObject.getPolygon();
 		Polygon p2 = new Polygon(Arrays.copyOf(p.xpoints, p.npoints), Arrays.copyOf(p.ypoints, p.npoints), p.npoints);
 		p2.translate((int) playerStart.getX(), (int) playerStart.getY());
 		g.fillPolygon(p2);
-		
-		g.setColor(prev);
 	}
 	
 	private void drawGround() {
 		Color prev = g.getColor();
-		
-		g.setColor(model.ground.getColor());
-		Polygon p = model.ground.getPolygon();
-		Polygon p2 = new Polygon(Arrays.copyOf(p.xpoints, p.npoints), Arrays.copyOf(p.ypoints, p.npoints), p.npoints);
-		p2.translate((int) playerStart.getX(), (int) playerStart.getY());
-		g.fillPolygon(p2);
-		
+		fillPolygon(model.ground);
 		g.setColor(prev);
 	}
 	
