@@ -3,6 +3,7 @@ package main.prefabs;
 import java.awt.*;
 
 import main.util.BoxCollider;
+import main.util.Rectangle;
 import main.util.Vector;
 
 public class CollidableGameObject {
@@ -76,6 +77,7 @@ public class CollidableGameObject {
 	
 	public boolean doesCollide(CollidableGameObject collideWith) {
 		// todo
+		
 		return false;
 	}
 	

@@ -36,16 +36,10 @@ public class GameController implements ActionListener, KeyListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (moveRight) {
-			model.moveRight();
-		} else if (moveLeft) {
-			model.moveLeft();
-		}
-		if (moveUp) {
-			model.moveUp();
-		} else if (moveDown) {
-			model.moveDown();
-	}
+		model.moveRight(moveRight);
+		model.moveLeft(moveLeft);
+		model.moveUp(moveUp);
+		model.moveDown(moveDown);
 		model.update();
 		view.repaint();
 	}
