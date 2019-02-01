@@ -1,6 +1,7 @@
 package main.mvc;
 
 import main.prefabs.*;
+import main.util.CollisionState;
 import main.util.Vector;
 
 import javax.swing.*;
@@ -20,8 +21,6 @@ class GameModel implements ActionListener {
 	
 	private final double G = 90;
 	private int deltaTime = 15; //ms
-	private double jumpForce = 17;
-	private double jumpSpeed;
 	private Timer jumpTimer = new Timer(deltaTime, this);
 	
 	GameModel(int width, int height) {
@@ -45,7 +44,8 @@ class GameModel implements ActionListener {
 	void moveLeft(boolean move) {
 		player.moveLeft(move);
 		movePlayer();
-;	}
+		;
+	}
 	
 	void moveUp(boolean move) {
 		player.moveUp(move);
@@ -53,7 +53,7 @@ class GameModel implements ActionListener {
 	}
 	
 	void moveDown(boolean move) {
-		player.moveLeft(move);
+		player.moveDown(move);
 		movePlayer();
 	}
 	
@@ -63,7 +63,11 @@ class GameModel implements ActionListener {
 	
 	private void moveObject(CollidableGameObject gameObject) {
 		//todo collison with ground
+		if (ground.doesCollide(gameObject)) {
 		
+		} else {
+			player.applySpeed();
+		}
 		// collision with other objects
 		if (gameObject instanceof Player) {
 			Obstacle nearest;
@@ -78,13 +82,7 @@ class GameModel implements ActionListener {
 		
 	}
 	
-	private boolean moveHor(double x) {
-//		player.translate(x);
-		return false;
-	}
-	
 	private boolean moveVert(double y) {
-//		boolean hit = checkVertHit(y);
 		boolean hit = checkGroundHit(y);
 		if (hit) {
 			if (y < 0) { // hit upper bound
@@ -98,18 +96,6 @@ class GameModel implements ActionListener {
 		return hit;
 	}
 	
-	private CollidableGameObject checkVertHit(double y) {
-		CollidableGameObject nearestObstacle;
-		for (CollidableGameObject obstacle : obstacles) {
-//			if ()
-		}
-		return null;
-	}
-	
-	private void checkObstacleHit() {
-	
-	}
-	
 	private boolean checkGroundHit(double y) {
 		if (y > 0) {
 			return player.getCollider().getBottom() + y >= ground.getCollider().getTop();
@@ -118,26 +104,19 @@ class GameModel implements ActionListener {
 		}
 	}
 	
-	private void jumpIter() {
-		if (!moveVert(jumpSpeed)) {
-			jumpSpeed += G * (1 / (1000.0 / deltaTime));
-		} else {
-			jumpTimer.stop( );
-		}
-	}
-	
 	void jump() {
-		jumpSpeed = -jumpForce;
-		jumpTimer.start();
-	
-	}
-	
-	void update() {
-		movePlayer();
+		player.jump(G);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (!ground.doesCollide(player)) {
+		
+		}
 		jumpIter();
+	}
+	
+	void update() {
+		movePlayer();
 	}
 }

@@ -3,6 +3,7 @@ package main.prefabs;
 import java.awt.*;
 
 import main.util.BoxCollider;
+import main.util.CollisionState2D;
 import main.util.Rectangle;
 import main.util.Vector;
 
@@ -56,7 +57,7 @@ public class CollidableGameObject {
 		translate(speed);
 	}
 	
-	public void translate(Vector speed) {
+	private void translate(Vector speed) {
 		Vector pos = Vector.clone(getPosition());
 		pos.setX(pos.getX() + speed.getX());
 		pos.setY(pos.getY() + speed.getY());
@@ -67,7 +68,6 @@ public class CollidableGameObject {
 		int deltaX = (int)(v.getX() - collider.getPosition().getX());
 		int deltaY = (int)(v.getY() - collider.getPosition().getY());
 		polygon.translate(deltaX, deltaY);
-		
 		collider.setPosition(v);
 	}
 	
@@ -75,7 +75,7 @@ public class CollidableGameObject {
 		return collider.getPosition();
 	}
 	
-	public boolean doesCollide(CollidableGameObject collideWith) {
+	public CollisionState2D doesCollide(CollidableGameObject collideWith) {
 		// todo
 		if(speed.getX() != 0){
 			doesCollideHor(collideWith);
@@ -97,7 +97,7 @@ public class CollidableGameObject {
 	
 	private boolean doesCollideVer(CollidableGameObject top, CollidableGameObject bottom){
 		
-		return false;
+		return null;
 	}
 
 }
