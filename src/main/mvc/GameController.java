@@ -45,7 +45,7 @@ public class GameController implements ActionListener, KeyListener {
 			model.moveUp();
 		} else if (moveDown) {
 			model.moveDown();
-		}
+	}
 		model.update();
 		view.repaint();
 	}
