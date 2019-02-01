@@ -13,20 +13,7 @@ public class Player extends CollidableGameObject {
 		this.controlSpeed = controlSpeed;
 	}
 	
-	public void moveRight() {
-		setPosition(new Vector(controlSpeed.getX(), 0));
+	public Vector getControlSpeed() {
+		return controlSpeed;
 	}
-	
-	public void moveLeft() {
-		setPosition(new Vector(-controlSpeed.getX(), 0));
-	}
-	
-	public void moveUp() {
-		setPosition(new Vector(0, -controlSpeed.getY()));
-	}
-	
-	public void moveDown() {
-		setPosition(new Vector(0, controlSpeed.getY()));
-	}
-	
 }

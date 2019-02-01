@@ -1,6 +1,7 @@
 package main.prefabs;
 
 import java.awt.*;
+import java.util.Arrays;
 
 import main.util.BoxCollider;
 import main.util.Rectangle;
@@ -64,11 +65,11 @@ public class CollidableGameObject {
 	}
 	
 	public void setPosition(Vector v) {
-		collider.setPosition(v);
-		
 		int deltaX = (int)(v.getX() - collider.getPosition().getX());
 		int deltaY = (int)(v.getY() - collider.getPosition().getY());
 		polygon.translate(deltaX, deltaY);
+		
+		collider.setPosition(v);
 	}
 	
 	public Vector getPosition() {

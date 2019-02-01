@@ -1,18 +1,13 @@
 package main.prefabs;
 
+import main.util.Vector;
+
+import java.awt.*;
+
 public class Ground extends CollidableGameObject {
 	
-	private double verticalPosition;
-	
-	public Ground(double position) {
-		this.verticalPosition = position;
+	public Ground(Vector pos, double colliderWidth, double colliderHeight, Vector speed, Polygon polygon, Color color) {
+		super(pos, colliderWidth, colliderHeight, speed, polygon, color);
 	}
 	
-	public double getVerticalPosition() {
-		return verticalPosition;
-	}
-	
-	public void setVerticalPosition(double verticalPosition) {
-		this.verticalPosition = verticalPosition;
-	}
 }
