@@ -77,9 +77,27 @@ public class CollidableGameObject {
 	
 	public boolean doesCollide(CollidableGameObject collideWith) {
 		// todo
+		if(speed.getX() != 0){
+			doesCollideHor(collideWith);
+		}
+		if(speed.getY() != 0){
+			doesCollideVer(collideWith);
+		}
+		
 		
 		return false;
 	}
 	
+	private boolean doesCollideHor(CollidableGameObject left, CollidableGameObject right){
+		if (){
+		
+		}
+		return false;
+	}
+	
+	private boolean doesCollideVer(CollidableGameObject top, CollidableGameObject bottom){
+		
+		return false;
+	}
 
 }
