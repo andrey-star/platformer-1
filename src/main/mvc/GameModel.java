@@ -24,7 +24,7 @@ class GameModel implements ActionListener {
 	private Timer jumpTimer = new Timer(deltaTime, this);
 	
 	GameModel() {
-//		player = new Player(new Vector(0, 0), new Vector(0, 0), 30, 30);
+//		player = new Player(new Vector(0, 0), new Vector(0, 0), 30, 30);  hgjgj
 		ground = new Ground(30);
 		arrowsMoveSpeed = new Vector(7, 7);
 		obstacles = new ArrayList<>();
