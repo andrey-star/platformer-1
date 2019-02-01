@@ -6,6 +6,7 @@ import main.util.Vector;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 public class GameView extends JFrame {
 	
@@ -48,25 +49,36 @@ public class GameView extends JFrame {
 	
 	private void drawCollider() {
 		Color prev = g.getColor();
+		
 		g.setColor(Color.RED);
-		Rectangle col = model.player.getCollider().getRectangle();
-		g.drawRect((int) (playerStart.getX() + col.getX1()), (int) (playerStart.getY() + col.getY1()), (int) col.getWidth(), (int) col.getHeight());
+		
+		Rectangle rec = model.player.getCollider().getRectangle();
+		g.drawRect((int) (playerStart.getX() + rec.getX1()), (int) (playerStart.getY() + rec.getY1()), (int) rec.getWidth(), (int) rec.getHeight());
+		
 		g.setColor(prev);
 	}
 	
 	private void drawPlayer() {
 		Color prev = g.getColor();
-		g.setColor(Color.BLACK);
-		Vector playerPos = model.player.getPosition();
-		g.fillRect((int) (playerPos.getX() + playerStart.getX()), (int) (playerPos.getY() + playerStart.getY()),
-				(int) playerBounds.getWidth(), (int) playerBounds.getHeight()/2);
+		
+		g.setColor(model.player.getColor());
+		Polygon p = model.player.getPolygon();
+		Polygon p2 = new Polygon(Arrays.copyOf(p.xpoints, p.npoints), Arrays.copyOf(p.ypoints, p.npoints), p.npoints);
+		p2.translate((int) playerStart.getX(), (int) playerStart.getY());
+		g.fillPolygon(p2);
+		
 		g.setColor(prev);
 	}
 	
 	private void drawGround() {
 		Color prev = g.getColor();
-		g.setColor(Color.BLACK);
-		g.drawLine(0, (int) (playerStart.getY() + model.ground.getVerticalPosition()), getWidth(), (int) (playerStart.getY() + model.ground.getVerticalPosition()));
+		
+		g.setColor(model.ground.getColor());
+		Polygon p = model.ground.getPolygon();
+		Polygon p2 = new Polygon(Arrays.copyOf(p.xpoints, p.npoints), Arrays.copyOf(p.ypoints, p.npoints), p.npoints);
+		p2.translate((int) playerStart.getX(), (int) playerStart.getY());
+		g.fillPolygon(p2);
+		
 		g.setColor(prev);
 	}
 	

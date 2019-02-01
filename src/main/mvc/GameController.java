@@ -27,7 +27,7 @@ public class GameController implements ActionListener, KeyListener {
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
-			GameModel model = new GameModel();
+			GameModel model = new GameModel(800, 500);
 			GameView view = new GameView(model);
 			GameController controller = new GameController(model, view);
 			controller.run();
