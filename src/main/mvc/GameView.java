@@ -1,7 +1,6 @@
 package main.mvc;
 
 import main.prefabs.CollidableGameObject;
-import main.prefabs.Player;
 import main.util.Rectangle;
 import main.util.Vector;
 
@@ -41,8 +40,8 @@ public class GameView extends JFrame {
 		g.clearRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		drawPlayer();
 		drawGround();
+		drawPlayer();
 		g2.drawImage(image, 0, 0, null);
 	}
 	

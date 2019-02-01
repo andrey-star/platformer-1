@@ -2,6 +2,7 @@ package main.mvc;
 
 import main.prefabs.*;
 import main.util.CollisionState;
+import main.util.CollisionState2D;
 import main.util.Vector;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ class GameModel implements ActionListener {
 	ArrayList<Obstacle> obstacles;
 	ArrayList<Enemy> enemies;
 	
-	private final double G = 90;
+	private final double G = 35;
 	private int deltaTime = 15; //ms
 	private Timer jumpTimer = new Timer(deltaTime, this);
 	
@@ -29,10 +30,10 @@ class GameModel implements ActionListener {
 		int[] xpoints = {0, 30, 30, 0};
 		int[] ypoints = {0, 0, 30, 30};
 		Polygon p = new Polygon(xpoints, ypoints, 4);
-		player = new Player(new Vector(0, 0), 30, 30, new Vector(0, 0), p, Color.BLACK, new Vector(2, 2));
+		player = new Player(new Vector(0, 0), 30, 30, new Vector(0, 0), p, Color.BLACK, new Vector(1, 1));
 		xpoints = new int[]{-width / 2, width / 2, width / 2, -width / 2};
 		ypoints = new int[]{-height / 2, -height / 2, 100, 100};
-		ground = new Ground(new Vector(-width / 2, -height / 2), width, height / 2 + 100, new Vector(0, 0), new Polygon(xpoints, ypoints, xpoints.length), Color.BLACK);
+		ground = new Ground(new Vector(-width / 2, -height / 2 + 30), width, height / 2 + 70, new Vector(0, 0), new Polygon(xpoints, ypoints, xpoints.length), Color.BLACK);
 		obstacles = new ArrayList<>();
 	}
 	
@@ -61,12 +62,37 @@ class GameModel implements ActionListener {
 	}
 	
 	private void moveObject(CollidableGameObject gameObject) {
-		//todo collison with ground
-//		if (ground.doesCollide(gameObject).getX() != CollisionState.NONE) {
-//
-//		} else {
-//			player.applySpeed();
-//		}
+		CollisionState2D colState = ground.doesCollide(gameObject);
+		if (colState.getX() != CollisionState.NONE || colState.getY() != CollisionState.NONE) {
+			if (colState.getX() != CollisionState.NONE) {
+				if (colState.getX() == CollisionState.RIGHT) {
+					Vector v = player.getPosition();
+					v.setX(ground.getCollider().getRight() - player.getCollider().getWidth());
+					player.setPosition(v);
+				} else {
+					Vector v = player.getPosition();
+					v.setX(ground.getCollider().getLeft());
+					player.setPosition(v);
+				}
+			} else {
+				player.applySpeedX();
+			}
+			if (colState.getY() != CollisionState.NONE) {
+				if (colState.getY() == CollisionState.BOTTOM) {
+					Vector v = player.getPosition();
+					v.setY(ground.getCollider().getBottom() - player.getCollider().getHeight());
+					player.setPosition(v);
+				} else {
+					Vector v = player.getPosition();
+					v.setY(ground.getCollider().getTop());
+					player.setPosition(v);
+				}
+			} else {
+				player.applySpeedY();
+			}
+		} else {
+			player.applySpeed();
+		}
 		// collision with other objects
 //		if (gameObject instanceof Player) {
 //			Obstacle nearest;
@@ -82,20 +108,6 @@ class GameModel implements ActionListener {
 		
 	}
 	
-	private boolean moveVert(double y) {
-		boolean hit = checkGroundHit(y);
-		if (hit) {
-			if (y < 0) { // hit upper bound
-			
-			} else { // hit lower bound
-				player.setPosition(new Vector(player.getPosition().getX(), ground.getCollider().getTop() - player.getCollider().getHeight()));
-			}
-		} else {
-			player.setPosition(new Vector(player.getPosition().getX(), y + player.getPosition().getY()));
-		}
-		return hit;
-	}
-	
 	private boolean checkGroundHit(double y) {
 		if (y > 0) {
 			return player.getCollider().getBottom() + y >= ground.getCollider().getTop();
@@ -109,16 +121,23 @@ class GameModel implements ActionListener {
 		player.jump();
 		jumpTimer.start();
 	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (!ground.doesCollideVer(player)) {
-			player.jumpIter(G, deltaTime);
-		} else {
+		CollisionState verColState = ground.doesCollide(player).getY();
+		if (verColState == CollisionState.BOTTOM) {
 			Vector v = player.getPosition();
 			v.setY(ground.getCollider().getBottom() - player.getCollider().getHeight());
 			player.setPosition(v);
 			player.endJump();
 			jumpTimer.stop();
+		} else if (verColState == CollisionState.TOP) {
+			Vector v = player.getPosition();
+			v.setY(ground.getCollider().getTop());
+			player.setPosition(v);
+			player.upperHit();
+		} else {
+			player.jumpIter(G, deltaTime);
 		}
 	}
 	

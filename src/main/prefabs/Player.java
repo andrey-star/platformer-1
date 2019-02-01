@@ -9,7 +9,7 @@ public class Player extends CollidableGameObject {
 	private Vector controlSpeed;
 	private boolean moveRight, moveLeft, moveUp, moveDown;
 	
-	private double jumpForce = 10;
+	private double jumpForce = 4.5;
 	private double fullJumpDelta = 0;
 	
 	public Player(Vector pos, double colliderWidth, double colliderHeight, Vector speed, Polygon polygon, Color color, Vector controlSpeed) {
@@ -18,7 +18,6 @@ public class Player extends CollidableGameObject {
 	}
 	
 	public void jump() {
-		System.out.println(getSpeed().getY());
 		Vector speed = getSpeed();
 		speed.setY(speed.getY() - jumpForce);
 		fullJumpDelta = jumpForce;
@@ -37,6 +36,12 @@ public class Player extends CollidableGameObject {
 		fullJumpDelta = 0;
 	}
 	
+	public void upperHit() {
+		Vector speed = getSpeed();
+		double hitJump = 2 * fullJumpDelta;
+		fullJumpDelta = -fullJumpDelta;
+		speed.setY(speed.getY() + hitJump);
+	}
 	
 	public void moveRight(boolean move) {
 		if (!moveRight && move) {

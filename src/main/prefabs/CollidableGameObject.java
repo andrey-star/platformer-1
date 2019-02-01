@@ -55,6 +55,14 @@ public class CollidableGameObject {
 		translate(speed);
 	}
 	
+	public void applySpeedX() {
+		translate(new Vector(speed.getX(), 0));
+	}
+	
+	public void applySpeedY() {
+		translate(new Vector(0, speed.getY()));
+	}
+	
 	private void translate(Vector speed) {
 		Vector pos = Vector.clone(getPosition());
 		pos.setX(pos.getX() + speed.getX());
@@ -110,7 +118,7 @@ public class CollidableGameObject {
 		SectionVertical sectionRight = new SectionVertical(right.getCollider().getLeft() + right.getSpeed().getX(),
 				right.getCollider().getTop() + right.getSpeed().getY(), right.getCollider().getBottom() + right.getSpeed().getY());
 		
-		
+		// todo
 		if (sectionLeft.getBottomY() > sectionRight.getTopY() || sectionLeft.getTopY() < sectionRight.getBottomY()) {
 			return false;
 		}
@@ -124,6 +132,7 @@ public class CollidableGameObject {
 		SectionHorizontal sectionBottom = new SectionHorizontal(bottom.getCollider().getTop() + bottom.getSpeed().getY(),
 				bottom.getCollider().getRight() + bottom.getSpeed().getX(), bottom.getCollider().getLeft() + bottom.getSpeed().getX());
 		
+		// todo
 		if (top.getCollider().getRight() < bottom.getCollider().getLeft() || top.getCollider().getLeft() > bottom.getCollider().getRight()) {
 			return false;
 		}
