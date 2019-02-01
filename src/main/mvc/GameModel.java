@@ -31,8 +31,8 @@ class GameModel implements ActionListener {
 		Polygon p = new Polygon(xpoints, ypoints, 4);
 		player = new Player(new Vector(0, 0), 30, 30, new Vector(0, 0), p, Color.BLACK, new Vector(2, 2));
 		xpoints = new int[]{-width / 2, width / 2, width / 2, -width / 2};
-		ypoints = new int[]{100, 100, 101, 101};
-		ground = new Ground(new Vector(0, 100), width, 1, new Vector(0, 0), new Polygon(xpoints, ypoints, xpoints.length), Color.BLACK);
+		ypoints = new int[]{-height / 2, -height / 2, 100, 100};
+		ground = new Ground(new Vector(-width / 2, -height / 2), width, height / 2 + 100, new Vector(0, 0), new Polygon(xpoints, ypoints, xpoints.length), Color.BLACK);
 		obstacles = new ArrayList<>();
 	}
 	
@@ -44,7 +44,6 @@ class GameModel implements ActionListener {
 	void moveLeft(boolean move) {
 		player.moveLeft(move);
 		movePlayer();
-		;
 	}
 	
 	void moveUp(boolean move) {
@@ -63,22 +62,23 @@ class GameModel implements ActionListener {
 	
 	private void moveObject(CollidableGameObject gameObject) {
 		//todo collison with ground
-		if (ground.doesCollide(gameObject)) {
-		
-		} else {
-			player.applySpeed();
-		}
+//		if (ground.doesCollide(gameObject).getX() != CollisionState.NONE) {
+//
+//		} else {
+//			player.applySpeed();
+//		}
 		// collision with other objects
-		if (gameObject instanceof Player) {
-			Obstacle nearest;
-			boolean collision = false;
-			for (Obstacle obstacle : obstacles) {
-				if (gameObject.doesCollide(obstacle)) {
-					collision = true;
-					break;
-				}
-			}
-		}
+//		if (gameObject instanceof Player) {
+//			Obstacle nearest;
+//			boolean collision = false;
+//			for (Obstacle obstacle : obstacles) {
+//				if (gameObject.doesCollide(obstacle).getX() != CollisionState.NONE) {
+//					collision = true;
+//					break;
+//				}
+//			}
+//		}
+		gameObject.applySpeed();
 		
 	}
 	
@@ -105,15 +105,21 @@ class GameModel implements ActionListener {
 	}
 	
 	void jump() {
-		player.jump(G);
+		player.endJump();
+		player.jump();
+		jumpTimer.start();
 	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (!ground.doesCollide(player)) {
-		
+		if (!ground.doesCollideVer(player)) {
+			player.jumpIter(G, deltaTime);
+		} else {
+			Vector v = player.getPosition();
+			v.setY(ground.getCollider().getBottom() - player.getCollider().getHeight());
+			player.setPosition(v);
+			player.endJump();
+			jumpTimer.stop();
 		}
-		jumpIter();
 	}
 	
 	void update() {

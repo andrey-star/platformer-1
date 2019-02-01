@@ -68,7 +68,7 @@ public class CollidableGameObject {
 		int deltaX = (int)(v.getX() - collider.getPosition().getX());
 		int deltaY = (int)(v.getY() - collider.getPosition().getY());
 		polygon.translate(deltaX, deltaY);
-		collider.setPosition(v);
+		collider.setPosition(new Vector(collider.getPosition().getX() + deltaX, collider.getPosition().getY() + deltaY));
 	}
 	
 	public Vector getPosition() {

@@ -2,34 +2,39 @@ package main.prefabs;
 
 import main.util.Vector;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class Player extends CollidableGameObject implements ActionListener {
+public class Player extends CollidableGameObject {
 	
 	private Vector controlSpeed;
 	private boolean moveRight, moveLeft, moveUp, moveDown;
 	
-	private double jumpForce = 17;
-	private double jumpSpeed;
-	
-	private double g;
+	private double jumpForce = 10;
+	private double fullJumpDelta = 0;
 	
 	public Player(Vector pos, double colliderWidth, double colliderHeight, Vector speed, Polygon polygon, Color color, Vector controlSpeed) {
 		super(pos, colliderWidth, colliderHeight, speed, polygon, color);
 		this.controlSpeed = controlSpeed;
 	}
 	
-	public void jump(double g) {
-		this.g = g;
-		jumpSpeed = -jumpForce;
-		jumpTimer.start();
+	public void jump() {
+		System.out.println(getSpeed().getY());
+		Vector speed = getSpeed();
+		speed.setY(speed.getY() - jumpForce);
+		fullJumpDelta = jumpForce;
 	}
 	
-	private void jumpIter() {
-		jumpSpeed += g * (1 / (1000.0 / deltaTime));
+	public void jumpIter(double g, int deltaTime) {
+		double deltaSpeed = g * (1 / (1000.0 / deltaTime));
+		Vector speed = getSpeed();
+		speed.setY(speed.getY() + deltaSpeed);
+		fullJumpDelta -= deltaSpeed;
+	}
+	
+	public void endJump() {
+		Vector speed = getSpeed();
+		speed.setY(speed.getY() + fullJumpDelta);
+		fullJumpDelta = 0;
 	}
 	
 	
