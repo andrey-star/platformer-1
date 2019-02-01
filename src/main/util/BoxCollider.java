@@ -1,14 +1,17 @@
 package main.util;
 
+import main.prefabs.CollidableGameObject;
+
 public class BoxCollider {
 
 	private Rectangle collider;
-	private double width, height;
 	
 	public BoxCollider(final Rectangle collider) {
 		this.collider = collider;
-		width = collider.getWidth();
-		height = collider.getHeight();
+	}
+	
+	public BoxCollider(Vector pos, double width, double height) {
+		collider = new Rectangle(pos, width, height);
 	}
 	
 	public Rectangle getRectangle() {
@@ -20,16 +23,16 @@ public class BoxCollider {
 	}
 	
 	public double getWidth() {
-		return width;
+		return collider.getWidth();
 	}
 	
 	public double getHeight() {
-		return height;
+		return collider.getHeight();
 	}
 	
-	public void move(Vector v) {
+	public void setPosition(Vector v) {
 		collider = new Rectangle(v.getX(), v.getY(),
-				v.getX() + width, v.getY() + height);
+				getWidth(), getHeight());
 	}
 	
 	public double getTop() {
@@ -46,6 +49,17 @@ public class BoxCollider {
 	
 	public double getLeft() {
 		return collider.getLeft();
+	}
+	
+	public Vector getPosition() {
+		return new Vector(collider.getX1(), collider.getY1());
+	}
+	
+	public boolean doesCollideVer(CollidableGameObject coll) {
+		if (coll.getSpeed().getY() > 0) {
+		
+		}
+		return false;
 	}
 	
 }

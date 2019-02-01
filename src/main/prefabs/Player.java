@@ -1,49 +1,32 @@
 package main.prefabs;
 
-import main.util.BoxCollider;
-import main.util.Rectangle;
 import main.util.Vector;
 
-public class Player {
+import java.awt.*;
+
+public class Player extends CollidableGameObject {
 	
-	private Vector playerPosition;
-	private Vector playerSpeed;
-	private BoxCollider collider;
-	private double mass;
+	private Vector controlSpeed;
 	
-	public Player(final Vector playerPosition, final Vector playerSpeed) {
-		this.playerPosition = playerPosition;
-		this.playerSpeed = playerSpeed;
-		mass = 2;
-		collider = new BoxCollider(new Rectangle(0, 0, 30, 30));
+	public Player(Vector pos, double colliderWidth, double colliderHeight, Vector speed, Polygon polygon, Color color, Vector controlSpeed) {
+		super(pos, colliderWidth, colliderHeight, speed, polygon, color);
+		this.controlSpeed = controlSpeed;
 	}
 	
-	public Vector getPosition() {
-		return playerPosition;
+	public void moveRight() {
+		setPosition(new Vector(controlSpeed.getX(), 0));
 	}
 	
-	public void setPosition(final Vector x) {
-		playerPosition = x;
-		collider.move(x);
+	public void moveLeft() {
+		setPosition(new Vector(-controlSpeed.getX(), 0));
 	}
 	
-	public Vector getSpeed() {
-		return playerSpeed;
+	public void moveUp() {
+		setPosition(new Vector(0, -controlSpeed.getY()));
 	}
 	
-	public void setSpeed(final Vector x) {
-		playerSpeed = x;
+	public void moveDown() {
+		setPosition(new Vector(0, controlSpeed.getY()));
 	}
 	
-	public double getMass() {
-		return mass;
-	}
-	
-	public void setMass(double mass) {
-		this.mass = mass;
-	}
-	
-	public BoxCollider getCollider() {
-		return collider;
-	}
 }

@@ -1,28 +1,33 @@
 package main.mvc;
 
-import main.prefabs.GameObject;
+import main.prefabs.CollidableGameObject;
 import main.prefabs.Ground;
 import main.prefabs.Player;
 import main.util.Vector;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 class GameModel implements ActionListener {
 	
 	Player player;
-	private Vector arrowsMoveSpeed;
 	Ground ground;
-	final double G = 9.81;
+	ArrayList<CollidableGameObject> obstacles;
+	
+	private Vector arrowsMoveSpeed;
+	private final double G = 90;
+	private int deltaTime = 15; //ms
+	private double jumpForce = 17;
 	private double jumpSpeed;
-	private Timer jumpTimer = new Timer(1000 / 60, this);
+	private Timer jumpTimer = new Timer(deltaTime, this);
 	
 	GameModel() {
-		player = new Player(new Vector(0, 0), new Vector(0, 0));
+//		player = new Player(new Vector(0, 0), new Vector(0, 0), 30, 30);
 		ground = new Ground(30);
 		arrowsMoveSpeed = new Vector(7, 7);
+		obstacles = new ArrayList<>();
 	}
 	
 	void moveRight() {
@@ -61,7 +66,11 @@ class GameModel implements ActionListener {
 		return hit;
 	}
 	
-	private GameObject checkVertHit(double y) {
+	private CollidableGameObject checkVertHit(double y) {
+		CollidableGameObject nearestObstacle;
+		for (CollidableGameObject obstacle : obstacles) {
+//			if ()
+		}
 		return null;
 	}
 	
@@ -79,14 +88,14 @@ class GameModel implements ActionListener {
 	
 	private void jumpIter() {
 		if (!moveVert(jumpSpeed)) {
-			jumpSpeed += 2;
+			jumpSpeed += G * (1 / (1000.0 / deltaTime));
 		} else {
 			jumpTimer.stop( );
 		}
 	}
 	
 	void jump() {
-		jumpSpeed = -17;
+		jumpSpeed = -jumpForce;
 		jumpTimer.start();
 	
 	}

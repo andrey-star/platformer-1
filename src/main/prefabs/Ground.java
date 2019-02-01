@@ -1,6 +1,6 @@
 package main.prefabs;
 
-public class Ground {
+public class Ground extends CollidableGameObject {
 	
 	private double verticalPosition;
 	

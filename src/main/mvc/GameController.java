@@ -1,6 +1,5 @@
 package main.mvc;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +13,7 @@ public class GameController implements ActionListener, KeyListener {
 	private GameView view;
 	private final int FPS = 60;
 	private Timer timer = new Timer(1000 / FPS, this);
-	boolean moveRight, moveLeft, moveUp, moveDown;
+	private boolean moveRight, moveLeft, moveUp, moveDown;
 	
 	private GameController(GameModel model, GameView view) {
 		this.model = model;

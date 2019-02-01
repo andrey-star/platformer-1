@@ -31,7 +31,7 @@ public class GameView extends JFrame {
 		setResizable(false);
 		image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
-		playerStart = new Vector(getWidth() / 2, getHeight() / 2);
+		playerStart = new Vector(getWidth() / 2.0, getHeight() / 2.0);
 		playerBounds = model.player.getCollider().getRectangle();
 	}
 	

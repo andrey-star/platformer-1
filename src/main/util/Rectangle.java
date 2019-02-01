@@ -2,16 +2,18 @@ package main.util;
 
 public class Rectangle {
 
-	private double x1, y1, x2, y2;
+	private double x1, y1;
 	private double width, height;
 	
-	public Rectangle(double x1, double y1, double x2, double y2) {
+	public Rectangle(double x1, double y1, double width, double height) {
 		this.x1 = x1;
 		this.y1 = y1;
-		this.x2 = x2;
-		this.y2 = y2;
-		width = x2 - x1;
-		height = y2 - y1;
+		this.width = width;
+		this.height = height;
+	}
+	
+	public Rectangle(Vector pos, double width, double height) {
+		this(pos.getX(), pos.getY(), width, height);
 	}
 	
 	public double getX1() {
@@ -23,11 +25,11 @@ public class Rectangle {
 	}
 	
 	public double getX2() {
-		return x2;
+		return x1 + width;
 	}
 	
 	public double getY2() {
-		return y2;
+		return y1 + height;
 	}
 	
 	public double getWidth() {
@@ -43,11 +45,11 @@ public class Rectangle {
 	}
 	
 	public double getRight() {
-		return x2;
+		return x1 + width;
 	}
 	
 	public double getBottom() {
-		return y2;
+		return y1 + height;
 	}
 	
 	public double getLeft() {

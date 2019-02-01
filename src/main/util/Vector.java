@@ -26,4 +26,8 @@ public class Vector {
 		this.y = y;
 	}
 	
+	public static Vector clone(Vector toClone) {
+		return new Vector(toClone.getX(), toClone.getY());
+	}
+	
 }
