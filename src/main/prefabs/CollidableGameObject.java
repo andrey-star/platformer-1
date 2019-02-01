@@ -1,7 +1,6 @@
 package main.prefabs;
 
 import java.awt.*;
-import java.util.Arrays;
 
 import main.util.BoxCollider;
 import main.util.Rectangle;
@@ -54,10 +53,10 @@ public class CollidableGameObject {
 	}
 
 	public void applySpeed() {
-		applyCustomSpeed(speed);
+		translate(speed);
 	}
 	
-	public void applyCustomSpeed(Vector speed) {
+	public void translate(Vector speed) {
 		Vector pos = Vector.clone(getPosition());
 		pos.setX(pos.getX() + speed.getX());
 		pos.setY(pos.getY() + speed.getY());
@@ -74,6 +73,12 @@ public class CollidableGameObject {
 	
 	public Vector getPosition() {
 		return collider.getPosition();
+	}
+	
+	public boolean doesCollide(CollidableGameObject collideWith) {
+		// todo
+		
+		return false;
 	}
 	
 

@@ -1,8 +1,6 @@
 package main.mvc;
 
-import main.prefabs.CollidableGameObject;
-import main.prefabs.Ground;
-import main.prefabs.Player;
+import main.prefabs.*;
 import main.util.Vector;
 
 import javax.swing.*;
@@ -17,7 +15,8 @@ class GameModel implements ActionListener {
 	int height;
 	Player player;
 	Ground ground;
-	ArrayList<CollidableGameObject> obstacles;
+	ArrayList<Obstacle> obstacles;
+	ArrayList<Enemy> enemies;
 	
 	private final double G = 90;
 	private int deltaTime = 15; //ms
@@ -38,24 +37,49 @@ class GameModel implements ActionListener {
 		obstacles = new ArrayList<>();
 	}
 	
-	void moveRight() {
-		player.applyCustomSpeed(new Vector(player.getControlSpeed().getX(), 0));
+	void moveRight(boolean move) {
+		player.moveRight(move);
+		movePlayer();
 	}
 	
-	void moveLeft() {
-		player.applyCustomSpeed(new Vector(-player.getControlSpeed().getX(), 0));
+	void moveLeft(boolean move) {
+		player.moveLeft(move);
+		movePlayer();
 ;	}
 	
-	void moveUp() {
-		player.applyCustomSpeed(new Vector(0, -player.getControlSpeed().getY()));
+	void moveUp(boolean move) {
+		player.moveUp(move);
+		movePlayer();
 	}
 	
-	void moveDown() {
-		player.applyCustomSpeed(new Vector(0, player.getControlSpeed().getY()));
+	void moveDown(boolean move) {
+		player.moveLeft(move);
+		movePlayer();
+	}
+	
+	private void movePlayer() {
+		moveObject(player);
+	}
+	
+	private void moveObject(CollidableGameObject gameObject) {
+		//todo collison with ground
+		
+		// collision with other objects
+		if (gameObject instanceof Player) {
+			Obstacle nearest;
+			boolean collision = false;
+			for (Obstacle obstacle : obstacles) {
+				if (gameObject.doesCollide(obstacle)) {
+					collision = true;
+					break;
+				}
+			}
+		}
+		
 	}
 	
 	private boolean moveHor(double x) {
-//		player.applyCustomSpeed(x);
+//		player.translate(x);
 		return false;
 	}
 	
@@ -109,8 +133,7 @@ class GameModel implements ActionListener {
 	}
 	
 	void update() {
-		player.setPosition(new Vector(player.getPosition().getX() + player.getSpeed().getX(),
-				player.getPosition().getY() + player.getSpeed().getY()));
+		movePlayer();
 	}
 	
 	@Override
