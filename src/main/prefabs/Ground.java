@@ -1,5 +1,6 @@
 package main.prefabs;
 
+import main.util.BoxCollider;
 import main.util.CollisionState;
 import main.util.CollisionState2D;
 import main.util.Vector;
@@ -8,8 +9,8 @@ import java.awt.*;
 
 public class Ground extends CollidableGameObject {
 	
-	public Ground(Vector pos, double colliderWidth, double colliderHeight, Vector speed, Polygon polygon, Color color) {
-		super(pos, colliderWidth, colliderHeight, speed, polygon, color);
+	public Ground(BoxCollider collider, Vector speed, Polygon polygon, Color color) {
+		super(collider, speed, polygon, color);
 	}
 	
 	public CollisionState2D doesCollide(CollidableGameObject collideWith) {
@@ -22,7 +23,9 @@ public class Ground extends CollidableGameObject {
 					this.getCollider().getRight()) {
 				return CollisionState.RIGHT;
 			}
-		} else {
+		}
+		
+		if (collideWith.getSpeed().getX() <= 0) {
 			if (collideWith.getCollider().getLeft() + collideWith.getSpeed().getX() <=
 					this.getCollider().getLeft()) {
 				return CollisionState.LEFT;
@@ -37,7 +40,8 @@ public class Ground extends CollidableGameObject {
 					this.getCollider().getBottom()) {
 				return CollisionState.BOTTOM;
 			}
-		} else {
+		}
+		if (collideWith.getSpeed().getY() <= 0){
 			if (collideWith.getCollider().getTop() + collideWith.getSpeed().getY() <=
 					this.getCollider().getTop()) {
 				return CollisionState.TOP;

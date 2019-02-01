@@ -14,11 +14,10 @@ public class GameView extends JFrame {
 	private GameModel model;
 	private BufferedImage image;
 	private Graphics g;
-	private Vector playerStart;
+	private Vector startAnchor;
 	
-	GameView(GameModel model) {
+	GameView(GameModel model, int width, int height, int shift) {
 		this.model = model;
-		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -26,13 +25,13 @@ public class GameView extends JFrame {
 		}
 		getContentPane().setBackground(Color.WHITE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 500);
+		setBounds(100, 100, width, height);
 		getContentPane().setLayout(null);
 		setVisible(true);
 		setResizable(false);
 		image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
-		playerStart = new Vector(getWidth() / 2.0, getHeight() / 2.0);
+		startAnchor = new Vector(0, shift);
 	}
 	
 	@Override
@@ -49,7 +48,7 @@ public class GameView extends JFrame {
 		Color prev = g.getColor();
 		g.setColor(Color.RED);
 		Rectangle rec = gameObject.getCollider().getRectangle();
-		g.drawRect((int) (playerStart.getX() + rec.getX1()), (int) (playerStart.getY() + rec.getY1()), (int) rec.getWidth(), (int) rec.getHeight());
+		g.drawRect((int) (startAnchor.getX() + rec.getX1()), (int) (startAnchor.getY() + rec.getY1()), (int) rec.getWidth(), (int) rec.getHeight());
 		g.setColor(prev);
 	}
 	
@@ -64,7 +63,7 @@ public class GameView extends JFrame {
 		g.setColor(gameObject.getColor());
 		Polygon p = gameObject.getPolygon();
 		Polygon p2 = new Polygon(Arrays.copyOf(p.xpoints, p.npoints), Arrays.copyOf(p.ypoints, p.npoints), p.npoints);
-		p2.translate((int) playerStart.getX(), (int) playerStart.getY());
+		p2.translate((int) startAnchor.getX(), (int) startAnchor.getY());
 		g.fillPolygon(p2);
 	}
 	
@@ -72,7 +71,7 @@ public class GameView extends JFrame {
 		g.setColor(gameObject.getColor());
 		Polygon p = gameObject.getPolygon();
 		Polygon p2 = new Polygon(Arrays.copyOf(p.xpoints, p.npoints), Arrays.copyOf(p.ypoints, p.npoints), p.npoints);
-		p2.translate((int) playerStart.getX(), (int) playerStart.getY());
+		p2.translate((int) startAnchor.getX(), (int) startAnchor.getY());
 		g.drawPolygon(p2);
 	}
 	

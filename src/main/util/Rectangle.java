@@ -55,4 +55,8 @@ public class Rectangle {
 	public double getLeft() {
 		return x1;
 	}
+	
+	public Rectangle copyOf() {
+		return new Rectangle(x1, y1, width, height);
+	}
 }

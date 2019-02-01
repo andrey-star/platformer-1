@@ -12,15 +12,15 @@ public class CollidableGameObject {
 	private Polygon polygon;
 	private Color color;
 	
-	public CollidableGameObject(Vector pos, double colliderWidth, double colliderHeight, Vector speed, Polygon polygon, Color color) {
-		collider = new BoxCollider(pos, colliderWidth, colliderHeight);
+	public CollidableGameObject(BoxCollider collider, Vector speed, Polygon polygon, Color color) {
+		this.collider = collider;
 		this.speed = speed;
 		this.polygon = polygon;
 		this.color = color;
 	}
 	
 	public BoxCollider getCollider() {
-		return collider;
+		return collider.copyOf();
 	}
 	
 	public void setCollider(BoxCollider collider) {
@@ -64,21 +64,21 @@ public class CollidableGameObject {
 	}
 	
 	private void translate(Vector speed) {
-		Vector pos = Vector.clone(getPosition());
+		Vector pos = getPosition().copyOf();
 		pos.setX(pos.getX() + speed.getX());
 		pos.setY(pos.getY() + speed.getY());
 		setPosition(pos);
 	}
 	
 	public void setPosition(Vector v) {
-		int deltaX = (int) (v.getX() - collider.getPosition().getX());
-		int deltaY = (int) (v.getY() - collider.getPosition().getY());
+		int deltaX = (int) Math.round(v.getX() - collider.getPosition().getX());
+		int deltaY = (int) Math.round(v.getY() - collider.getPosition().getY());
 		polygon.translate(deltaX, deltaY);
 		collider.setPosition(new Vector(collider.getPosition().getX() + deltaX, collider.getPosition().getY() + deltaY));
 	}
 	
 	public Vector getPosition() {
-		return collider.getPosition();
+		return collider.getPosition().copyOf();
 	}
 	
 	public CollisionState2D doesCollide(CollidableGameObject collideWith) {

@@ -55,11 +55,7 @@ public class BoxCollider {
 		return new Vector(collider.getX1(), collider.getY1());
 	}
 	
-	public boolean doesCollideVer(CollidableGameObject coll) {
-		if (coll.getSpeed().getY() > 0) {
-		
-		}
-		return false;
+	public BoxCollider copyOf() {
+		return new BoxCollider(getRectangle().copyOf());
 	}
-	
 }

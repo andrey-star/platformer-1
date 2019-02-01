@@ -26,9 +26,12 @@ public class GameController implements ActionListener, KeyListener {
 	}
 	
 	public static void main(String[] args) {
+		int width = 800;
+		int height = 500;
+		int titleBarWidth = 31;
 		EventQueue.invokeLater(() -> {
-			GameModel model = new GameModel(800, 500);
-			GameView view = new GameView(model);
+			GameModel model = new GameModel(width, height - titleBarWidth);
+			GameView view = new GameView(model, width, height, titleBarWidth);
 			GameController controller = new GameController(model, view);
 			controller.run();
 		});

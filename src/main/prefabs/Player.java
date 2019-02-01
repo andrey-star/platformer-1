@@ -1,5 +1,6 @@
 package main.prefabs;
 
+import main.util.BoxCollider;
 import main.util.Vector;
 
 import java.awt.*;
@@ -9,11 +10,11 @@ public class Player extends CollidableGameObject {
 	private Vector controlSpeed;
 	private boolean moveRight, moveLeft, moveUp, moveDown;
 	
-	private double jumpForce = 4.5;
+	private double jumpForce = 2.5;
 	private double fullJumpDelta = 0;
 	
-	public Player(Vector pos, double colliderWidth, double colliderHeight, Vector speed, Polygon polygon, Color color, Vector controlSpeed) {
-		super(pos, colliderWidth, colliderHeight, speed, polygon, color);
+	public Player(BoxCollider collider, Vector speed, Polygon polygon, Color color, Vector controlSpeed) {
+		super(collider, speed, polygon, color);
 		this.controlSpeed = controlSpeed;
 	}
 	
