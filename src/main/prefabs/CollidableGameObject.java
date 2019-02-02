@@ -82,11 +82,11 @@ public class CollidableGameObject {
 	}
 	
 	public CollisionState2D doesCollide(CollidableGameObject collideWith) {
-		CollisionState collisionVer = CollisionState.NONE;
 		CollisionState collisionHor = CollisionState.NONE;
+		CollisionState collisionVer = CollisionState.NONE;
 		
 		// todo
-		if (collider.getPosition().getX() > collideWith.getPosition().getX()) {
+		if (collider.getPosition().getX() < collideWith.getPosition().getX()) {
 			if (doesCollideHor(this, collideWith)) {
 				collisionHor = CollisionState.LEFT;
 			}
@@ -96,7 +96,7 @@ public class CollidableGameObject {
 			}
 		}
 		
-		if (collider.getPosition().getY() > collideWith.getPosition().getY()) {
+		if (collider.getPosition().getY() < collideWith.getPosition().getY()) {
 			if (doesCollideVer(this, collideWith)) {
 				collisionVer = CollisionState.TOP;
 			}
@@ -119,7 +119,12 @@ public class CollidableGameObject {
 				right.getCollider().getTop() + right.getSpeed().getY(), right.getCollider().getBottom() + right.getSpeed().getY());
 		
 		// todo
-		if (sectionLeft.getBottomY() > sectionRight.getTopY() || sectionLeft.getTopY() < sectionRight.getBottomY()) {
+		if (sectionLeft.getBottomY() < sectionRight.getTopY() || sectionLeft.getTopY() > sectionRight.getBottomY()) {
+			// can't collide - Y axis coordinates to different
+			return false;
+		}
+		if (sectionLeft.getX() < sectionRight.getX()) {
+			// can't collide - X axis coordinates not close enough
 			return false;
 		}
 		return true;
@@ -133,10 +138,16 @@ public class CollidableGameObject {
 				bottom.getCollider().getRight() + bottom.getSpeed().getX(), bottom.getCollider().getLeft() + bottom.getSpeed().getX());
 		
 		// todo
-		if (top.getCollider().getRight() < bottom.getCollider().getLeft() || top.getCollider().getLeft() > bottom.getCollider().getRight()) {
+//		System.out.println(sectionTop.getRightX() + " " + sectionBottom.getLeftX());
+		if (sectionTop.getRightX() < sectionBottom.getLeftX() || sectionTop.getLeftX() > sectionBottom.getRightX()) {
+			// can't collide - X axis coordinates too different
 			return false;
 		}
 		
+		if (sectionTop.getY() < sectionBottom.getY()) {
+			// can't collide - Y axis coordinates not close enough
+			return false;
+		}
 		return true;
 	}
 	

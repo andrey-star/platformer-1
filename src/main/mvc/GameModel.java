@@ -29,6 +29,7 @@ class GameModel implements ActionListener {
 		player = new Player(new BoxCollider(ShapeCreator.square(width / 2, height / 2, 30)), Vector.ZERO, PolygonCreator.square(width / 2, height / 2, 30), Color.BLACK, Vector.ONE);
 		ground = new Ground(new BoxCollider(ShapeCreator.rectangle(3, 1, width - 7, height * 2 / 3)), Vector.ZERO, PolygonCreator.rectangle(0, 0, width, height), Color.BLACK);
 		obstacles = new ArrayList<>();
+		obstacles.add(new Obstacle(new BoxCollider(ShapeCreator.square(width / 2 + 50, height / 2, 30)), Vector.ZERO, PolygonCreator.square(width / 2 + 50, height / 2, 30), Color.CYAN));
 	}
 	
 	void moveRight(boolean move) {
@@ -56,6 +57,8 @@ class GameModel implements ActionListener {
 	}
 	
 	private void moveObject(CollidableGameObject gameObject) {
+		
+		// Collision with ground
 		CollisionState2D colState = ground.doesCollide(gameObject);
 		if (colState.getX() != CollisionState.NONE || colState.getY() != CollisionState.NONE) {
 			if (colState.getX() != CollisionState.NONE) {
@@ -83,17 +86,17 @@ class GameModel implements ActionListener {
 		} else {
 			player.applySpeed();
 		}
-		// collision with other objects
-//		if (gameObject instanceof Player) {
-//			Obstacle nearest;
-//			boolean collision = false;
-//			for (Obstacle obstacle : obstacles) {
-//				if (gameObject.doesCollide(obstacle).getX() != CollisionState.NONE) {
-//					collision = true;
-//					break;
-//				}
-//			}
-//		}
+		
+		// Collision with other objects
+		if (gameObject instanceof Player) {
+			Obstacle nearest;
+			boolean collision = false;
+			for (Obstacle obstacle : obstacles) {
+				if (gameObject.doesCollide(obstacle).getY() != CollisionState.NONE) {
+					collision = true;
+				}
+			}
+		}
 		gameObject.applySpeed();
 		
 	}

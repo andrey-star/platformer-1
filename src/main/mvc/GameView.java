@@ -1,6 +1,7 @@
 package main.mvc;
 
 import main.prefabs.CollidableGameObject;
+import main.prefabs.Obstacle;
 import main.util.Rectangle;
 import main.util.Vector;
 
@@ -41,7 +42,17 @@ public class GameView extends JFrame {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		drawGround();
 		drawPlayer();
+		drawObstacles();
 		g2.drawImage(image, 0, 0, null);
+	}
+	
+	private void drawObstacles() {
+		for (Obstacle obstacle : model.obstacles) {
+			Color prev = g.getColor();
+			fillPolygon(obstacle);
+			drawCollider(obstacle);
+			g.setColor(prev);
+		}
 	}
 	
 	private void drawCollider(CollidableGameObject gameObject) {
