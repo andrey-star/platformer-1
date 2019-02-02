@@ -41,8 +41,8 @@ public class GameView extends JFrame {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		drawGround();
-		drawPlayer();
 		drawObstacles();
+		drawPlayer();
 		g2.drawImage(image, 0, 0, null);
 	}
 	

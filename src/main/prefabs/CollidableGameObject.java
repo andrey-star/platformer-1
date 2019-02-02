@@ -85,24 +85,23 @@ public class CollidableGameObject {
 		CollisionState collisionHor = CollisionState.NONE;
 		CollisionState collisionVer = CollisionState.NONE;
 		
-		// todo
 		if (collider.getPosition().getX() < collideWith.getPosition().getX()) {
 			if (doesCollideHor(this, collideWith)) {
-				collisionHor = CollisionState.LEFT;
+				collisionHor = CollisionState.RIGHT;
 			}
 		} else {
 			if (doesCollideHor(collideWith, this)) {
-				collisionHor = CollisionState.RIGHT;
+				collisionHor = CollisionState.LEFT;
 			}
 		}
 		
 		if (collider.getPosition().getY() < collideWith.getPosition().getY()) {
 			if (doesCollideVer(this, collideWith)) {
-				collisionVer = CollisionState.TOP;
+				collisionVer = CollisionState.BOTTOM;
 			}
 		} else {
 			if (doesCollideVer(collideWith, this)) {
-				collisionVer = CollisionState.BOTTOM;
+				collisionVer = CollisionState.TOP;
 			}
 		}
 		
@@ -114,12 +113,11 @@ public class CollidableGameObject {
 	private boolean doesCollideHor(CollidableGameObject left, CollidableGameObject right) {
 		
 		SectionVertical sectionLeft = new SectionVertical(left.getCollider().getRight() + left.getSpeed().getX(),
-				left.getCollider().getTop() + left.getSpeed().getY(), left.getCollider().getBottom() + left.getSpeed().getY());
+				left.getCollider().getTop(), left.getCollider().getBottom());
 		SectionVertical sectionRight = new SectionVertical(right.getCollider().getLeft() + right.getSpeed().getX(),
-				right.getCollider().getTop() + right.getSpeed().getY(), right.getCollider().getBottom() + right.getSpeed().getY());
+				right.getCollider().getTop(), right.getCollider().getBottom());
 		
-		// todo
-		if (sectionLeft.getBottomY() < sectionRight.getTopY() || sectionLeft.getTopY() > sectionRight.getBottomY()) {
+		if (sectionLeft.getBottomY() <= sectionRight.getTopY() || sectionLeft.getTopY() >= sectionRight.getBottomY()) {
 			// can't collide - Y axis coordinates to different
 			return false;
 		}
@@ -133,13 +131,13 @@ public class CollidableGameObject {
 	private boolean doesCollideVer(CollidableGameObject top, CollidableGameObject bottom) {
 		
 		SectionHorizontal sectionTop = new SectionHorizontal(top.getCollider().getBottom() + top.getSpeed().getY(),
-				top.getCollider().getRight() + top.getSpeed().getX(), top.getCollider().getLeft() + top.getSpeed().getX());
+				top.getCollider().getRight(), top.getCollider().getLeft());
 		SectionHorizontal sectionBottom = new SectionHorizontal(bottom.getCollider().getTop() + bottom.getSpeed().getY(),
-				bottom.getCollider().getRight() + bottom.getSpeed().getX(), bottom.getCollider().getLeft() + bottom.getSpeed().getX());
+				bottom.getCollider().getRight(), bottom.getCollider().getLeft());
 		
 		// todo
 //		System.out.println(sectionTop.getRightX() + " " + sectionBottom.getLeftX());
-		if (sectionTop.getRightX() < sectionBottom.getLeftX() || sectionTop.getLeftX() > sectionBottom.getRightX()) {
+		if (sectionTop.getRightX() <= sectionBottom.getLeftX() || sectionTop.getLeftX() >= sectionBottom.getRightX()) {
 			// can't collide - X axis coordinates too different
 			return false;
 		}
@@ -149,6 +147,10 @@ public class CollidableGameObject {
 			return false;
 		}
 		return true;
+	}
+	
+	public void makeYSpeedZero() {
+		setSpeed(new Vector(getSpeed().getX(), 0));
 	}
 	
 }
