@@ -17,7 +17,7 @@ class GameModel {
 	private int deltaTime = 16; //ms
 	
 	GameModel(int width, int height) {
-		player = PlayerCreator.standardSquarePlayer(width / 6, height / 2, 30, Vector.ONE);
+		player = PlayerCreator.standardSquarePlayer(width / 6, height / 2, 30, new Vector(0.75, 0.75));
 		ground = new Ground(new BoxCollider(ShapeCreator.rectangle(3, 1, width - 7, height * 2 / 3)), Vector.ZERO, PolygonCreator.rectangle(0, 0, width, height), Color.BLACK);
 		obstacles = new ArrayList<>();
 		int obstacleSide = (int) player.getCollider().getWidth();

@@ -11,6 +11,7 @@ public class Player extends CollidableGameObject {
 	private boolean moveRight, moveLeft, moveUp, moveDown;
 	
 	private double jumpForce = 2.5;
+	boolean airborne = false;
 	
 	public Player(BoxCollider collider, Vector speed, Polygon polygon, Color color, Vector controlSpeed) {
 		super(collider, speed, polygon, color);
@@ -18,9 +19,12 @@ public class Player extends CollidableGameObject {
 	}
 	
 	public void jump() {
-		Vector speed = getSpeed().copyOf();
-		speed.setY(speed.getY() - jumpForce);
-		setSpeed(speed);
+//		if (!airborne) {
+			Vector speed = getSpeed().copyOf();
+			speed.setY(speed.getY() - jumpForce);
+			setSpeed(speed);
+			airborne = true;
+//		}
 	}
 	
 	public void moveRight(boolean move) {
@@ -94,7 +98,7 @@ public class Player extends CollidableGameObject {
 		} else {
 			setSpeed(new Vector(getSpeed().getX(), 0));
 		}
-		
+		airborne = false;
 	}
 	
 	public void hitTop(double g, double deltaTime) {
