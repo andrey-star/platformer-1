@@ -1,5 +1,6 @@
 package main.mvc;
 
+import main.prefabs.Camera;
 import main.prefabs.CollidableGameObject;
 import main.prefabs.Obstacle;
 import main.util.Rectangle;
@@ -42,55 +43,81 @@ public class GameView extends JFrame {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		drawGround();
 		drawObstacles();
+		drawCamera();
 		drawPlayer();
 		g2.drawImage(image, 0, 0, null);
 	}
 	
+	private void drawCamera() {
+		Color prev = g.getColor();
+		g.setColor(Color.MAGENTA);
+		double shift = -(model.camera.getPosition().getX());
+		drawRectWithShift(model.camera.getBox(), new Vector(shift, 0));
+		g.setColor(prev);
+	}
+	
 	private void drawObstacles() {
 		for (Obstacle obstacle : model.obstacles) {
+			if (!model.camera.isInView(obstacle.getCollider().getRectangle())) {
+				continue;
+			}
 			Color prev = g.getColor();
-			fillPolygon(obstacle);
-			drawCollider(obstacle);
+			double shift = -(model.camera.getPosition().getX());
+			fillPolygonWithShift(obstacle, new Vector(shift, 0));
+			drawColliderWithShift(obstacle, new Vector(shift, 0));
 			g.setColor(prev);
 		}
 	}
 	
-	private void drawCollider(CollidableGameObject gameObject) {
+	private void drawGround() {
 		Color prev = g.getColor();
-		g.setColor(Color.RED);
-		Rectangle rec = gameObject.getCollider().getRectangle();
-		g.drawRect((int) (startAnchor.getX() + rec.getX1()), (int) (startAnchor.getY() + rec.getY1()), (int) rec.getWidth(), (int) rec.getHeight());
+		double shift = -(model.camera.getPosition().getX());
+		drawPolygonWithShift(model.ground, new Vector(shift, 0));
+		drawColliderWithShift(model.ground, new Vector(shift, 0));
 		g.setColor(prev);
 	}
 	
 	private void drawPlayer() {
 		Color prev = g.getColor();
-		fillPolygon(model.player);
-		drawCollider(model.player);
+		double shift = -(model.camera.getPosition().getX());
+		fillPolygonWithShift(model.player, new Vector(shift, 0));
+		drawColliderWithShift(model.player, new Vector(shift, 0));
 		g.setColor(prev);
 	}
 	
 	private void fillPolygon(CollidableGameObject gameObject) {
+		fillPolygonWithShift(gameObject, new Vector(0, 0));
+	}
+	
+	private void fillPolygonWithShift(CollidableGameObject gameObject, Vector shift) {
 		g.setColor(gameObject.getColor());
 		Polygon p = gameObject.getPolygon();
 		Polygon p2 = new Polygon(Arrays.copyOf(p.xpoints, p.npoints), Arrays.copyOf(p.ypoints, p.npoints), p.npoints);
-		p2.translate((int) startAnchor.getX(), (int) startAnchor.getY());
+		p2.translate((int) (startAnchor.getX() + shift.getX()), (int) (startAnchor.getY() + shift.getY()));
 		g.fillPolygon(p2);
 	}
 	
-	private void drawPolygon(CollidableGameObject gameObject) {
+	private void drawPolygonWithShift(CollidableGameObject gameObject, Vector shift) {
 		g.setColor(gameObject.getColor());
 		Polygon p = gameObject.getPolygon();
 		Polygon p2 = new Polygon(Arrays.copyOf(p.xpoints, p.npoints), Arrays.copyOf(p.ypoints, p.npoints), p.npoints);
-		p2.translate((int) startAnchor.getX(), (int) startAnchor.getY());
+		p2.translate((int) (startAnchor.getX() + shift.getX()), (int) (startAnchor.getY() + shift.getY()));
 		g.drawPolygon(p2);
 	}
 	
-	private void drawGround() {
+	private void drawColliderWithShift(CollidableGameObject gameObject, Vector shift) {
 		Color prev = g.getColor();
-		drawPolygon(model.ground);
-		drawCollider(model.ground);
+		g.setColor(Color.RED);
+		Rectangle rec = gameObject.getCollider().getRectangle();
+		g.drawRect((int) (startAnchor.getX() + rec.getX1() + shift.getX()), (int) (startAnchor.getY() + rec.getY1() + shift.getY()), (int) rec.getWidth(), (int) rec.getHeight());
 		g.setColor(prev);
 	}
 	
+	private void drawCollider(CollidableGameObject gameObject) {
+		drawColliderWithShift(gameObject, new Vector(0, 0));
+	}
+	
+	private void drawRectWithShift(Rectangle rec, Vector shift) {
+		g.drawRect((int) (startAnchor.getX() + rec.getX1() + shift.getX()), (int) (startAnchor.getY() + rec.getY1() + shift.getY()), (int) rec.getWidth(), (int) rec.getHeight());
+	}
 }

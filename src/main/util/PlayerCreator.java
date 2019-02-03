@@ -1,6 +1,5 @@
 package main.util;
 
-import main.prefabs.Obstacle;
 import main.prefabs.Player;
 
 import java.awt.*;

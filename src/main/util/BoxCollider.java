@@ -58,4 +58,8 @@ public class BoxCollider {
 	public BoxCollider copyOf() {
 		return new BoxCollider(getRectangle().copyOf());
 	}
+	
+	public BoxCollider shiftX(int shift) {
+		return new BoxCollider(getRectangle().copyOf().shiftX(shift));
+	}
 }

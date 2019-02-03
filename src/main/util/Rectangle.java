@@ -59,4 +59,8 @@ public class Rectangle {
 	public Rectangle copyOf() {
 		return new Rectangle(x1, y1, width, height);
 	}
+	
+	public Rectangle shiftX(int shift) {
+		return new Rectangle(getX1() + shift, getY1(), width, height);
+	}
 }

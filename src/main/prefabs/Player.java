@@ -10,7 +10,7 @@ public class Player extends CollidableGameObject {
 	private Vector controlSpeed;
 	private boolean moveRight, moveLeft, moveUp, moveDown;
 	
-	private double jumpForce = 2.5;
+	private double jumpForce = 2.6;
 	boolean airborne = false;
 	
 	public Player(BoxCollider collider, Vector speed, Polygon polygon, Color color, Vector controlSpeed) {

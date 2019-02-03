@@ -1,6 +1,7 @@
 package main.prefabs;
 
 import java.awt.*;
+import java.util.Arrays;
 
 import main.util.*;
 import main.util.Rectangle;
@@ -153,4 +154,9 @@ public class CollidableGameObject {
 		setSpeed(new Vector(getSpeed().getX(), 0));
 	}
 	
+	public Obstacle shiftX(int shift) {
+		Polygon copy = new Polygon(Arrays.copyOf(polygon.xpoints, polygon.npoints), Arrays.copyOf(polygon.ypoints, polygon.npoints), polygon.npoints);
+		copy.translate(shift, 0);
+		return new Obstacle(collider.copyOf().shiftX(shift), speed.copyOf(), copy, getColor());
+	}
 }
