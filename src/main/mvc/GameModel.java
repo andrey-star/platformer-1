@@ -24,7 +24,7 @@ class GameModel {
 //		player = new Player(new BoxCollider(new Vector(width / 3, height / 2), 50, 30), new Vector(0, 0), p, Color.BLACK, new Vector(0.75, 0.75));
 		player = PlayerFactory.standardSquarePlayer(width / 3, height / 2,   30, new Vector(0.75, 0.75));
 		camera = new Camera(new Rectangle(0, 0, width, height));
-		ground = new Ground(new BoxCollider(ShapeCreator.rectangle(3, 1, width - 7, height * 2 / 3)), Vector.ZERO, PolygonFactory.rectangle(0, 0, width, height), Color.BLACK);
+		ground = new Ground(new BoxCollider(ShapeFactory.rectangle(3, 1, width - 7, height * 2 / 3)), Vector.ZERO, PolygonFactory.rectangle(0, 0, width, height), Color.BLACK);
 		obstacles = new ArrayList<>();
 		int obstacleSide = 30;
 		
