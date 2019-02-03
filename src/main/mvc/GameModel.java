@@ -14,7 +14,7 @@ class GameModel {
 	Camera camera;
 	ArrayList<Obstacle> obstacles;
 	
-	private final double G = 3;
+	private final double G = 3.5;
 	private int deltaTime = 16; //ms
 	
 	GameModel(int width, int height) {
