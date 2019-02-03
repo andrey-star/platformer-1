@@ -1,5 +1,6 @@
 package main.util;
 
+import main.prefabs.BoxCollider;
 import main.prefabs.Obstacle;
 
 import java.awt.*;

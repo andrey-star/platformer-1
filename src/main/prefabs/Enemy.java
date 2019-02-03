@@ -1,9 +1,7 @@
 package main.prefabs;
 
-import main.util.BoxCollider;
 import main.util.Vector;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class Enemy extends CollidableGameObject {

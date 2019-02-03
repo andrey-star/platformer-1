@@ -1,6 +1,7 @@
-package main.util;
+package main.prefabs;
 
-import main.prefabs.CollidableGameObject;
+import main.util.Rectangle;
+import main.util.Vector;
 
 public class BoxCollider {
 

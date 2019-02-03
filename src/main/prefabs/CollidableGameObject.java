@@ -4,7 +4,6 @@ import java.awt.*;
 import java.util.Arrays;
 
 import main.util.*;
-import main.util.Rectangle;
 
 public class CollidableGameObject {
 	

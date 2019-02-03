@@ -1,6 +1,5 @@
 package main.prefabs;
 
-import main.util.BoxCollider;
 import main.util.CollisionState;
 import main.util.CollisionState2D;
 import main.util.Vector;

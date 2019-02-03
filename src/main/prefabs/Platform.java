@@ -1,6 +1,5 @@
 package main.prefabs;
 
-import main.util.BoxCollider;
 import main.util.Vector;
 
 import java.awt.*;
