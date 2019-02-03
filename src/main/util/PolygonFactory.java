@@ -2,7 +2,7 @@ package main.util;
 
 import java.awt.*;
 
-public class PolygonCreator {
+public class PolygonFactory {
 	
 	public static Polygon rectangle(int x1, int y1, int width, int height) {
 		int[] xPoints = {x1, x1 + width, x1 + width, x1};
@@ -11,7 +11,7 @@ public class PolygonCreator {
 	}
 	
 	public static Polygon square(int x1, int y1, int side) {
-		return PolygonCreator.rectangle(x1, y1, side, side);
+		return PolygonFactory.rectangle(x1, y1, side, side);
 	}
 	
 }
