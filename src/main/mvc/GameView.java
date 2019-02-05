@@ -1,6 +1,5 @@
 package main.mvc;
 
-import main.prefabs.Camera;
 import main.prefabs.CollidableGameObject;
 import main.prefabs.Obstacle;
 import main.util.Rectangle;

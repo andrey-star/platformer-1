@@ -101,7 +101,7 @@ public class Player extends CollidableGameObject {
 	}
 	
 	public void hitTop(double g, double deltaTime) {
-		hitBottom() ;
+		hitBottom();
 		applyG(g, deltaTime);
 	}
 }
