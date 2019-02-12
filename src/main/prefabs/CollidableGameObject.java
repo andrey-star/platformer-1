@@ -121,7 +121,7 @@ public class CollidableGameObject {
 			// can't collide - Y axis coordinates to different
 			return false;
 		}
-		if (sectionLeft.getX() < sectionRight.getX()) {
+		if (sectionLeft.getX() <= sectionRight.getX()) {
 			// can't collide - X axis coordinates not close enough
 			return false;
 		}
@@ -142,7 +142,7 @@ public class CollidableGameObject {
 			return false;
 		}
 		
-		if (sectionTop.getY() < sectionBottom.getY()) {
+		if (sectionTop.getY() <= sectionBottom.getY()) {
 			// can't collide - Y axis coordinates not close enough
 			return false;
 		}

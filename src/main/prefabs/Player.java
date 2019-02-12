@@ -7,9 +7,10 @@ import java.awt.*;
 public class Player extends CollidableGameObject {
 	
 	private Vector controlSpeed;
+	private Vector realShift;
 	private boolean moveRight, moveLeft, moveUp, moveDown;
 	
-	private double jumpForce = 2.8;
+	private double jumpForce = 7.5;
 	boolean airborne = false;
 	
 	public Player(BoxCollider collider, Vector speed, Polygon polygon, Color color, Vector controlSpeed) {
@@ -24,6 +25,14 @@ public class Player extends CollidableGameObject {
 			setSpeed(speed);
 			airborne = true;
 //		}
+	}
+	
+	public Vector getRealShift() {
+		return realShift;
+	}
+	
+	public void setRealShift(Vector realShift) {
+		this.realShift = realShift;
 	}
 	
 	public void moveRight(boolean move) {
