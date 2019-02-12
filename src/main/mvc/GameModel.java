@@ -196,6 +196,7 @@ class GameModel {
 	
 	private void moveObject(CollidableGameObject gameObject) {
 		if (gameObject instanceof Player) {
+			System.out.println(gameObject.getPosition().getX() - obstacles.get(0).getPosition().getX());
 			player.applyG(G, deltaTime);
 			Vector maxShift = getMaxShift(gameObject, ground); // max ground shift
 			for (Obstacle obstacle : obstacles) {
