@@ -111,7 +111,6 @@ public class CollidableGameObject {
 	
 	
 	private boolean doesCollideHor(CollidableGameObject left, CollidableGameObject right) {
-		
 		SectionVertical sectionLeft = new SectionVertical(left.getCollider().getRight() + left.getSpeed().getX(),
 				left.getCollider().getTop(), left.getCollider().getBottom());
 		SectionVertical sectionRight = new SectionVertical(right.getCollider().getLeft() + right.getSpeed().getX(),
@@ -129,14 +128,11 @@ public class CollidableGameObject {
 	}
 	
 	private boolean doesCollideVer(CollidableGameObject top, CollidableGameObject bottom) {
-		
 		SectionHorizontal sectionTop = new SectionHorizontal(top.getCollider().getBottom() + top.getSpeed().getY(),
 				top.getCollider().getRight(), top.getCollider().getLeft());
 		SectionHorizontal sectionBottom = new SectionHorizontal(bottom.getCollider().getTop() + bottom.getSpeed().getY(),
 				bottom.getCollider().getRight(), bottom.getCollider().getLeft());
 		
-		// todo
-//		System.out.println(sectionTop.getRightX() + " " + sectionBottom.getLeftX());
 		if (sectionTop.getRightX() <= sectionBottom.getLeftX() || sectionTop.getLeftX() >= sectionBottom.getRightX()) {
 			// can't collide - X axis coordinates too different
 			return false;

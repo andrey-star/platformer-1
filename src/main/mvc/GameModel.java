@@ -24,7 +24,7 @@ class GameModel {
 //		int[] ypoints = {height / 2 + 30, height / 2, height / 2 + 30};
 //		Polygon p = new Polygon(xpoints, ypoints, 3);
 //		player = new Player(new BoxCollider(new Vector(width / 3, height / 2), 30, 30), new Vector(0, 0), p, Color.BLACK, new Vector(0.75, 0.75));
-		player = PlayerFactory.standardSquarePlayer(width / 3, height / 2,   30, new Vector(2, 2));
+		player = PlayerFactory.standardSquarePlayer(width / 3, height / 2, 30, new Vector(2, 2));
 		camera = new Camera(new Rectangle(0, 0, width, height));
 		ground = new Ground(new BoxCollider(ShapeFactory.rectangle(3, 1, width - 7, height * 2 / 3)), Vector.ZERO, PolygonFactory.rectangle(0, 0, width, height), Color.BLACK);
 		obstacles = new ArrayList<>();
@@ -55,7 +55,7 @@ class GameModel {
 		figure1.add(ObstacleFactory.staticCyanRectangleObstacle(width / 6 + 120, (int) ground.getCollider().getBottom() - obstacleSide - 90, obstacleSide));
 		// 5 row
 		figure1.add(ObstacleFactory.staticCyanRectangleObstacle(width / 6 + 120, (int) ground.getCollider().getBottom() - obstacleSide - 120, obstacleSide));
-	
+		
 		// 2 figure
 		ArrayList<Obstacle> figure2 = new ArrayList<>();
 		// 1 row
@@ -67,11 +67,11 @@ class GameModel {
 		// 2 row
 		figure2.add(ObstacleFactory.staticCyanRectangleObstacle(width / 6, (int) ground.getCollider().getBottom() - obstacleSide - 30, obstacleSide));
 		figure2.add(ObstacleFactory.staticCyanRectangleObstacle(width / 6 + 90, (int) ground.getCollider().getBottom() - obstacleSide - 30, obstacleSide));
-	
+		
 		// 3 row
 		figure2.add(ObstacleFactory.staticCyanRectangleObstacle(width / 6, (int) ground.getCollider().getBottom() - obstacleSide - 60, obstacleSide));
 		figure2.add(ObstacleFactory.staticCyanRectangleObstacle(width / 6 + 90, (int) ground.getCollider().getBottom() - obstacleSide - 60, obstacleSide));
-	
+		
 		// 3 figure
 		ArrayList<Obstacle> figure3 = new ArrayList<>();
 		// 1 row
@@ -91,8 +91,16 @@ class GameModel {
 		ArrayList<Obstacle> cube = new ArrayList<>();
 		cube.add(ObstacleFactory.staticCyanRectangleObstacle(width / 6, (int) ground.getCollider().getBottom() - obstacleSide - 150, obstacleSide));
 		
-		DynamicObstacle dynamicCube = ObstacleFactory.dynamicRectangleObstacle(50, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, 50);
-		obstacles.add(dynamicCube);
+		//Dynamic figure
+		ArrayList<Obstacle> dynFigure = new ArrayList<>();
+		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(0, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, 100));
+		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(30, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, 100));
+		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(60, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, 100));
+		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(90, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, 100));
+		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(0, (int) ground.getCollider().getBottom() - obstacleSide - 30, obstacleSide, 100));
+		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(90, (int) ground.getCollider().getBottom() - obstacleSide - 30, obstacleSide, 100));
+		
+		obstacles.addAll(dynFigure);
 		obstacles.addAll(FigureShifter.shiftX(figure1, 250));
 //		obstacles.addAll(FigureShifter.shiftX(figure2, 600));
 //		obstacles.addAll(FigureShifter.shiftX(figure2, 800));
@@ -106,7 +114,7 @@ class GameModel {
 //		obstacles.addAll(FigureShifter.shiftX(cube, 1150));
 //		obstacles.addAll(FigureShifter.shiftX(cube, 1280));
 	}
-
+	
 	void moveRight(boolean move) {
 		player.moveRight(move);
 //		checkPlayer();
@@ -128,7 +136,6 @@ class GameModel {
 	}
 	
 	
-	
 	private void checkObstacles() {
 		for (Obstacle obstacle : obstacles) {
 			checkObject(obstacle);
@@ -139,7 +146,7 @@ class GameModel {
 		checkObject(player);
 	}
 	
-	private Vector getMaxShift(CollidableGameObject toCollide, CollidableGameObject collideWith) {
+	private Vector getAvailableShift(CollidableGameObject toCollide, CollidableGameObject collideWith) {
 		boolean insideType = (collideWith instanceof Ground);
 		CollisionState2D colState = insideType ? collideWith.doesCollide(toCollide) : toCollide.doesCollide(collideWith);
 		Vector maxNewPos = toCollide.getPosition().copyOf();
@@ -148,15 +155,15 @@ class GameModel {
 				if (insideType) {
 					maxNewPos.setX(collideWith.getCollider().getRight() - toCollide.getCollider().getWidth());
 				} else {
-					maxNewPos.setX(collideWith.getCollider().getLeft() - toCollide.getCollider().getWidth());
+					maxNewPos.setX(collideWith.getCollider().getLeft() - toCollide.getCollider().getWidth() + collideWith.getSpeed().getX());
 				}
 			} else {
 				if (insideType) {
 					maxNewPos.setX(collideWith.getCollider().getLeft());
 				} else {
-					jump();
+//					jump();
 					dynCol = colState;
-					maxNewPos.setX(collideWith.getCollider().getRight());
+					maxNewPos.setX(collideWith.getCollider().getRight() + collideWith.getSpeed().getX());
 				}
 			}
 		} else {
@@ -169,7 +176,7 @@ class GameModel {
 				if (insideType) {
 					maxNewPos.setY(collideWith.getCollider().getBottom() - toCollide.getCollider().getHeight());
 				} else {
-					maxNewPos.setY(collideWith.getCollider().getTop() - toCollide.getCollider().getHeight());
+					maxNewPos.setY(collideWith.getCollider().getTop() - toCollide.getCollider().getHeight() + collideWith.getSpeed().getY());
 				}
 				if (toCollide instanceof Player) {
 					((Player) toCollide).hitBottom();
@@ -178,9 +185,9 @@ class GameModel {
 				}
 			} else {
 				if (insideType) {
-					maxNewPos.setY(collideWith.getCollider().getTop() + 1);
+					maxNewPos.setY(collideWith.getCollider().getTop());
 				} else {
-					maxNewPos.setY(collideWith.getCollider().getBottom() + 1);
+					maxNewPos.setY(collideWith.getCollider().getBottom() + collideWith.getSpeed().getY());
 				}
 				if (toCollide instanceof Player) {
 					((Player) toCollide).hitTop(G, deltaTime);
@@ -197,14 +204,14 @@ class GameModel {
 	}
 	
 	private void checkObject(CollidableGameObject gameObject) {
-	 	if (gameObject instanceof Player) {
-  			player.applyG(G, deltaTime);
-			Vector maxShift = getMaxShift(gameObject, ground); // max ground shift
+		if (gameObject instanceof Player) {
+			player.applyG(G, deltaTime);
+			Vector maxShift = getAvailableShift(gameObject, ground); // max ground shift
 			for (Obstacle obstacle : obstacles) {
 				if (!camera.isInView(obstacle.getCollider().getRectangle())) {
 					continue; // skip out of view objects
 				}
-				Vector curMaxShift = getMaxShift(gameObject, obstacle);
+				Vector curMaxShift = getAvailableShift(gameObject, obstacle);
 				if (Math.abs(maxShift.getX()) > Math.abs(curMaxShift.getX())) {
 					maxShift.setX(curMaxShift.getX());
 				}
@@ -245,12 +252,11 @@ class GameModel {
 	}
 	
 	void update() {
-		System.err.println(0);
+		System.err.print("");
 		checkObstacles();
-		System.err.println(0);
 		checkPlayer();
-		System.err.println(0);
 		applyShift();
+		System.err.print("");
 	}
 	
 }

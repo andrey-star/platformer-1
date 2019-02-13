@@ -20,10 +20,10 @@ public class Player extends CollidableGameObject {
 	
 	public void jump() {
 //		if (!airborne) {
-			Vector speed = getSpeed().copyOf();
-			speed.setY(speed.getY() - jumpForce);
-			setSpeed(speed);
-			airborne = true;
+		Vector speed = getSpeed().copyOf();
+		speed.setY(speed.getY() - jumpForce);
+		setSpeed(speed);
+		airborne = true;
 //		}
 	}
 	
