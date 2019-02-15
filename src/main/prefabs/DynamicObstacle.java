@@ -14,6 +14,10 @@ public class DynamicObstacle extends Obstacle {
 		super(collider, speed, polygon, color);
 		this.changeRate = changeRate;
 		iterationCounter = 0;
+		if (changeRate < 0) {
+			this.changeRate = -this.changeRate;
+			iterationCounter += this.changeRate / 2;
+		}
 	}
 	
 	public void updateSpeed() {
@@ -26,5 +30,9 @@ public class DynamicObstacle extends Obstacle {
 		} else {
 			iterationCounter++;
 		}
+	}
+	
+	public int getChangeRate() {
+		return changeRate;
 	}
 }

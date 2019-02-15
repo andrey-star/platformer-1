@@ -149,9 +149,13 @@ public class CollidableGameObject {
 		setSpeed(new Vector(getSpeed().getX(), 0));
 	}
 	
-	public Obstacle shiftX(int shift) {
+	public Obstacle shift(Vector shift) {
 		Polygon copy = new Polygon(Arrays.copyOf(polygon.xpoints, polygon.npoints), Arrays.copyOf(polygon.ypoints, polygon.npoints), polygon.npoints);
-		copy.translate(shift, 0);
-		return new Obstacle(collider.copyOf().shiftX(shift), speed.copyOf(), copy, getColor());
+		copy.translate((int) shift.getX(), (int) shift.getY());
+		if (this instanceof DynamicObstacle) {
+			return new DynamicObstacle(collider.copyOf().shift(shift), speed.copyOf(), copy, getColor(), ((DynamicObstacle) this).getChangeRate());
+		} else {
+			return new Obstacle(collider.copyOf().shift(shift), speed.copyOf(), copy, getColor());
+		}
 	}
 }

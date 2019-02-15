@@ -13,10 +13,8 @@ class GameModel {
 	Ground ground;
 	Camera camera;
 	ArrayList<Obstacle> obstacles;
-	CollisionState2D dynCol;
 	
-	
-	private final double G = 20;
+	private final double G = 25;
 	private int deltaTime = 16; //ms
 	
 	GameModel(int width, int height) {
@@ -88,21 +86,31 @@ class GameModel {
 		figure3.add(ObstacleFactory.staticCyanRectangleObstacle(width / 6 + 60, (int) ground.getCollider().getBottom() - obstacleSide - 60, obstacleSide));
 		figure3.add(ObstacleFactory.staticCyanRectangleObstacle(width / 6 + 90, (int) ground.getCollider().getBottom() - obstacleSide - 60, obstacleSide));
 		
-		ArrayList<Obstacle> cube = new ArrayList<>();
-		cube.add(ObstacleFactory.staticCyanRectangleObstacle(width / 6, (int) ground.getCollider().getBottom() - obstacleSide - 150, obstacleSide));
+		// Dynamic figure 1
+		ArrayList<Obstacle> dynFigure1 = new ArrayList<>();
+		dynFigure1.add(ObstacleFactory.dynamicRectangleObstacle(0, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, new Vector(0, 1), 100));
+		dynFigure1.add(ObstacleFactory.dynamicRectangleObstacle(30, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, new Vector(0, 1), 100));
+		dynFigure1.add(ObstacleFactory.dynamicRectangleObstacle(60, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, new Vector(0, 1), 100));
+		dynFigure1.add(ObstacleFactory.dynamicRectangleObstacle(90, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, new Vector(0, 1), 100));
+		dynFigure1.add(ObstacleFactory.dynamicRectangleObstacle(0, (int) ground.getCollider().getBottom() - obstacleSide - 30, obstacleSide, new Vector(0, 1), 100));
+		dynFigure1.add(ObstacleFactory.dynamicRectangleObstacle(90, (int) ground.getCollider().getBottom() - obstacleSide - 30, obstacleSide, new Vector(0, 1), 100));
 		
-		//Dynamic figure
-		ArrayList<Obstacle> dynFigure = new ArrayList<>();
-		int shiftY = -0;
-		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(0, (int) ground.getCollider().getBottom() - obstacleSide + shiftY, obstacleSide, 100));
-		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(30, (int) ground.getCollider().getBottom() - obstacleSide + shiftY, obstacleSide, 100));
-		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(60, (int) ground.getCollider().getBottom() - obstacleSide + shiftY, obstacleSide, 100));
-		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(90, (int) ground.getCollider().getBottom() - obstacleSide + shiftY, obstacleSide, 100));
-		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(0, (int) ground.getCollider().getBottom() - obstacleSide - 30 + shiftY, obstacleSide, 100));
-		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(90, (int) ground.getCollider().getBottom() - obstacleSide - 30 + shiftY, obstacleSide, 100));
+		// Dynamic figure 2
+		ArrayList<Obstacle> dynFigure2 = new ArrayList<>();
+		dynFigure2.add(ObstacleFactory.dynamicRectangleObstacle(0, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, new Vector(1, 0), 100));
+		dynFigure2.add(ObstacleFactory.dynamicRectangleObstacle(30, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, new Vector(1, 0), 100));
+		dynFigure2.add(ObstacleFactory.dynamicRectangleObstacle(60, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, new Vector(1, 0), 100));
 		
-		obstacles.addAll(dynFigure);
-		obstacles.addAll(FigureShifter.shiftX(figure1, 250));
+		// Dynamic figure 2
+		ArrayList<Obstacle> dynFigure3 = new ArrayList<>();
+		dynFigure3.add(ObstacleFactory.dynamicRectangleObstacle(0, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, new Vector(1, 0), -100));
+		dynFigure3.add(ObstacleFactory.dynamicRectangleObstacle(30, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, new Vector(1, 0), -100));
+		dynFigure3.add(ObstacleFactory.dynamicRectangleObstacle(60, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, new Vector(1, 0), -100));
+		
+		obstacles.addAll(FigureShifter.shift(dynFigure1, new Vector(0, -100)));
+		obstacles.addAll(FigureShifter.shift(dynFigure2, new Vector(150, -200)));
+		obstacles.addAll(FigureShifter.shift(dynFigure3, new Vector(300, -200)));
+		obstacles.addAll(FigureShifter.shift(figure1, new Vector(250, 0)));
 //		obstacles.addAll(FigureShifter.shiftX(figure2, 600));
 //		obstacles.addAll(FigureShifter.shiftX(figure2, 800));
 //		obstacles.addAll(FigureShifter.shiftX(figure3, 1000));
@@ -173,7 +181,6 @@ class GameModel {
 		if (colState.getY() != CollisionState.NONE) {
 			if (colState.getY() == CollisionState.BOTTOM) {
 				if (insideType) {
-					System.out.println(1);
 					maxNewPos.setY(collideWith.getCollider().getBottom() - toCollide.getCollider().getHeight());
 				} else {
 					maxNewPos.setY(collideWith.getCollider().getTop() - toCollide.getCollider().getHeight() + collideWith.getSpeed().getY());
@@ -197,9 +204,6 @@ class GameModel {
 				}
 			}
 		} else {
-			if (toCollide instanceof Player) {
-				((Player) toCollide).setAirborne(false);
-			}
 //			maxNewPos.setY(maxNewPos.getY() + toCollide.getSpeed().getY());
 			maxNewPos.setY(Integer.MAX_VALUE / 2.0 + 5);
 		}

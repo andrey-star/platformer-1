@@ -60,7 +60,7 @@ public class Rectangle {
 		return new Rectangle(x1, y1, width, height);
 	}
 	
-	public Rectangle shiftX(int shift) {
-		return new Rectangle(getX1() + shift, getY1(), width, height);
+	public Rectangle shift(Vector shift) {
+		return new Rectangle(getX1() + shift.getX(), getY1() + shift.getY(), width, height);
 	}
 }

@@ -12,8 +12,8 @@ public class ObstacleFactory {
 		return new Obstacle(new BoxCollider(new Rectangle(x1, y1, side, side)), Vector.zero(), PolygonFactory.square(x1, y1, side), Color.CYAN);
 	}
 	
-	public static DynamicObstacle dynamicRectangleObstacle(int x1, int y1, int side, int changeRate) {
-		return new DynamicObstacle(new BoxCollider(new Rectangle(x1, y1, side, side)), new Vector(1, 0), PolygonFactory.square(x1, y1, side), Color.CYAN, changeRate);
+	public static DynamicObstacle dynamicRectangleObstacle(int x1, int y1, int side, Vector speed, int changeRate) {
+		return new DynamicObstacle(new BoxCollider(new Rectangle(x1, y1, side, side)), speed, PolygonFactory.square(x1, y1, side), Color.CYAN, changeRate);
 	}
 	
 }

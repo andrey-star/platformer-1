@@ -60,7 +60,7 @@ public class BoxCollider {
 		return new BoxCollider(getRectangle().copyOf());
 	}
 	
-	public BoxCollider shiftX(int shift) {
-		return new BoxCollider(getRectangle().copyOf().shiftX(shift));
+	public BoxCollider shift(Vector shift) {
+		return new BoxCollider(getRectangle().copyOf().shift(shift));
 	}
 }
