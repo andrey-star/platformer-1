@@ -180,7 +180,7 @@ class GameModel {
 				if (insideType) {
 					maxNewPos.setY(collideWith.getCollider().getTop() + 1);
 				} else {
-					maxNewPos.setY(collideWith.getCollider().getBottom() + 1);
+					maxNewPos.setY(collideWith.getCollider().getBottom());
 				}
 				if (toCollide instanceof Player) {
 					((Player) toCollide).hitTop(G, deltaTime);
