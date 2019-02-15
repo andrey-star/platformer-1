@@ -33,7 +33,7 @@ public class Player extends ReactingObject {
 		if (!moveLeft && move) {
 			arrowSpeed.setX(-controlSpeed.getX());
 			moveLeft = true;
-			moveRight = true;
+			moveRight = false;
 		} else if (moveLeft && !move) {
 			arrowSpeed.setX(0);
 			moveLeft = false;

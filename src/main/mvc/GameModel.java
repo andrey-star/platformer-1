@@ -196,9 +196,7 @@ class GameModel {
 				}
 			}
 		} else {
-			if (toCollide instanceof Player) {
-				((Player) toCollide).setAirborne(false);
-			}
+		
 //			maxNewPos.setY(maxNewPos.getY() + toCollide.getSpeed().getY());
 			maxNewPos.setY(Integer.MAX_VALUE / 2.0 + 5);
 		}
