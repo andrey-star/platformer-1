@@ -4,45 +4,17 @@ import main.util.Vector;
 
 import java.awt.*;
 
-public class Player extends CollidableGameObject {
+public class Player extends ReactingObject {
 	
 	private Vector controlSpeed;
-	private Vector realShift;
 	private boolean moveRight, moveLeft, moveUp, moveDown;
 	private Vector arrowSpeed;
-	private Vector verSpeed;
-	private Vector obstacleSpeed;
 	
-	private double jumpForce = 8;
-	private boolean airborne = false;
 	
 	public Player(BoxCollider collider, Vector speed, Polygon polygon, Color color, Vector controlSpeed) {
 		super(collider, speed, polygon, color);
 		this.controlSpeed = controlSpeed;
 		arrowSpeed = Vector.zero();
-		verSpeed = Vector.zero();
-		obstacleSpeed = Vector.zero();
-	}
-	
-	public void jump() {
-//		if (!airborne) {
-		verSpeed.setY(-jumpForce);
-		applySpeeds();
-		airborne = true;
-		applyBottomObjectSpeed(Vector.zero());
-//		}
-	}
-	
-	public void setAirborne(boolean isAirborne) {
-		airborne = isAirborne;
-	}
-	
-	public Vector getRealShift() {
-		return realShift;
-	}
-	
-	public void setRealShift(Vector realShift) {
-		this.realShift = realShift;
 	}
 	
 	public void moveRight(boolean move) {
@@ -91,32 +63,10 @@ public class Player extends CollidableGameObject {
 		applySpeeds();
 	}
 	
-	private void applySpeeds() {
-		setSpeed(new Vector(arrowSpeed.getX() + verSpeed.getX() + obstacleSpeed.getX(),
-				arrowSpeed.getY() + verSpeed.getY() + obstacleSpeed.getY()));
+	protected void applySpeeds() {
+		setSpeed(new Vector(arrowSpeed.getX() + getVerSpeed().getX() + getObstacleSpeed().getX(),
+				arrowSpeed.getY() + getVerSpeed().getY() + getObstacleSpeed().getY()));
 	}
 	
-	public void applyG(double g, double deltaTime) {
-		double deltaSpeed = g * (1 / (1000.0 / deltaTime));
-		verSpeed.setY(verSpeed.getY() + deltaSpeed);
-		applySpeeds();
-	}
 	
-	public void hitBottom(CollidableGameObject gameObject) {
-		verSpeed = Vector.zero();
-		applyBottomObjectSpeed(gameObject.getSpeed());
-		applySpeeds();
-	}
-	
-	public void hitTop(double g, double deltaTime) {
-		verSpeed = Vector.zero();
-		applyG(g, deltaTime);
-		applySpeeds();
-	}
-	
-	private void applyBottomObjectSpeed(Vector v) {
-		obstacleSpeed.setX(v.getX());
-		obstacleSpeed.setY(v.getY());
-		applySpeeds();
-	}
 }
