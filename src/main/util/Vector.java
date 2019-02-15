@@ -4,8 +4,6 @@ public class Vector {
 
 	private double x;
 	private double y;
-	public static final Vector ZERO = new Vector(0, 0);
-	public static final Vector ONE = new Vector(1, 1);
 	
 	public Vector(double x, double y) {
 		this.x = x;
@@ -36,5 +34,9 @@ public class Vector {
 	public String toString() {
 		return "x=" + x +
 				", y=" + y;
+	}
+	
+	static public Vector zero() {
+		return new Vector(0, 0);
 	}
 }

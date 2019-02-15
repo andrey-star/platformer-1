@@ -9,22 +9,30 @@ public class Player extends CollidableGameObject {
 	private Vector controlSpeed;
 	private Vector realShift;
 	private boolean moveRight, moveLeft, moveUp, moveDown;
+	private Vector arrowSpeed;
+	private Vector verSpeed;
+	private Vector obstacleSpeed;
 	
 	private double jumpForce = 7.5;
-	boolean airborne = false;
+	private boolean airborne = false;
 	
 	public Player(BoxCollider collider, Vector speed, Polygon polygon, Color color, Vector controlSpeed) {
 		super(collider, speed, polygon, color);
 		this.controlSpeed = controlSpeed;
+		arrowSpeed = Vector.zero();
+		verSpeed = Vector.zero();
+		obstacleSpeed = Vector.zero();
 	}
 	
 	public void jump() {
 //		if (!airborne) {
-		Vector speed = getSpeed().copyOf();
-		speed.setY(speed.getY() - jumpForce);
-		setSpeed(speed);
-		airborne = true;
+		verSpeed.setY(-jumpForce);
+		applySpeeds();
 //		}
+	}
+	
+	public void setAirborne(boolean isAirborne) {
+		airborne = isAirborne;
 	}
 	
 	public Vector getRealShift() {
@@ -37,80 +45,76 @@ public class Player extends CollidableGameObject {
 	
 	public void moveRight(boolean move) {
 		if (!moveRight && move) {
-			Vector speed = getSpeed().copyOf();
-			speed.setX(speed.getX() + controlSpeed.getX());
-			setSpeed(speed);
+			arrowSpeed.setX(controlSpeed.getX());
 			moveRight = true;
 		} else if (moveRight && !move) {
-			Vector speed = getSpeed().copyOf();
-			speed.setX(speed.getX() - controlSpeed.getX());
-			setSpeed(speed);
+			arrowSpeed.setX(0);
 			moveRight = false;
 		}
+		applySpeeds();
 	}
 	
 	public void moveLeft(boolean move) {
 		if (!moveLeft && move) {
-			Vector speed = getSpeed().copyOf();
-			speed.setX(speed.getX() - controlSpeed.getX());
-			setSpeed(speed);
+			arrowSpeed.setX(-controlSpeed.getX());
 			moveLeft = true;
 		} else if (moveLeft && !move) {
-			Vector speed = getSpeed().copyOf();
-			speed.setX(speed.getX() + controlSpeed.getX());
-			setSpeed(speed);
+			arrowSpeed.setX(0);
 			moveLeft = false;
 		}
+		applySpeeds();
 	}
 	
 	public void moveUp(boolean move) {
 		if (!moveUp && move) {
-			Vector speed = getSpeed().copyOf();
-			speed.setY(speed.getY() - controlSpeed.getY());
-			setSpeed(speed);
+			arrowSpeed.setY(-controlSpeed.getY());
 			moveUp = true;
 		} else if (moveUp && !move) {
-			Vector speed = getSpeed().copyOf();
-			speed.setY(speed.getY() + controlSpeed.getY());
-			setSpeed(speed);
+			arrowSpeed.setY(0);
 			moveUp = false;
 		}
+		applySpeeds();
 	}
 	
 	public void moveDown(boolean move) {
 		if (!moveDown && move) {
-			Vector speed = getSpeed().copyOf();
-			speed.setY(speed.getY() + controlSpeed.getY());
-			setSpeed(speed);
+			arrowSpeed.setY(controlSpeed.getY());
 			moveDown = true;
 		} else if (moveDown && !move) {
-			Vector speed = getSpeed().copyOf();
-			speed.setY(speed.getY() - controlSpeed.getY());
-			setSpeed(speed);
+			arrowSpeed.setY(0);
 			moveDown = false;
 		}
+		applySpeeds();
+	}
+	
+	private void applySpeeds() {
+		setSpeed(new Vector(arrowSpeed.getX() + verSpeed.getX() + obstacleSpeed.getX(),
+				arrowSpeed.getY() + verSpeed.getY() + obstacleSpeed.getY()));
 	}
 	
 	public void applyG(double g, double deltaTime) {
 		double deltaSpeed = g * (1 / (1000.0 / deltaTime));
-		Vector speed = getSpeed().copyOf();
-		speed.setY(speed.getY() + deltaSpeed);
-		setSpeed(speed);
+		verSpeed.setY(verSpeed.getY() + deltaSpeed);
+		applySpeeds();
 	}
 	
-	public void hitBottom() {
-		if (moveDown) {
-			setSpeed(new Vector(getSpeed().getX(), controlSpeed.getY()));
-		} else if (moveUp) {
-			setSpeed(new Vector(getSpeed().getX(), -controlSpeed.getY()));
-		} else {
-			setSpeed(new Vector(getSpeed().getX(), 0));
-		}
-		airborne = false;
+	public void hitBottom(CollidableGameObject gameObject) {
+		verSpeed = Vector.zero();
+		applyBottomObjectSpeed(gameObject.getSpeed());
+		applySpeeds();
 	}
 	
 	public void hitTop(double g, double deltaTime) {
-		hitBottom();
+		verSpeed = Vector.zero();
 		applyG(g, deltaTime);
+		applySpeeds();
+	}
+	
+	private void applyBottomObjectSpeed(Vector v) {
+		if (!airborne) {
+			obstacleSpeed.setX(v.getX());
+			obstacleSpeed.setY(v.getY());
+		}
+		applySpeeds();
 	}
 }

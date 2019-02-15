@@ -26,7 +26,7 @@ class GameModel {
 //		player = new Player(new BoxCollider(new Vector(width / 3, height / 2), 30, 30), new Vector(0, 0), p, Color.BLACK, new Vector(0.75, 0.75));
 		player = PlayerFactory.standardSquarePlayer(width / 3, height / 2, 30, new Vector(2, 2));
 		camera = new Camera(new Rectangle(0, 0, width, height));
-		ground = new Ground(new BoxCollider(ShapeFactory.rectangle(3, 1, width - 7, height * 2 / 3)), Vector.ZERO, PolygonFactory.rectangle(0, 0, width, height), Color.BLACK);
+		ground = new Ground(new BoxCollider(ShapeFactory.rectangle(3, 1, width - 7, height * 2 / 3)), Vector.zero(), PolygonFactory.rectangle(0, 0, width, height), Color.BLACK);
 		obstacles = new ArrayList<>();
 		int obstacleSide = 30;
 		
@@ -93,12 +93,13 @@ class GameModel {
 		
 		//Dynamic figure
 		ArrayList<Obstacle> dynFigure = new ArrayList<>();
-		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(0, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, 100));
-		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(30, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, 100));
-		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(60, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, 100));
-		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(90, (int) ground.getCollider().getBottom() - obstacleSide, obstacleSide, 100));
-		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(0, (int) ground.getCollider().getBottom() - obstacleSide - 30, obstacleSide, 100));
-		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(90, (int) ground.getCollider().getBottom() - obstacleSide - 30, obstacleSide, 100));
+		int shiftY = -0;
+		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(0, (int) ground.getCollider().getBottom() - obstacleSide + shiftY, obstacleSide, 100));
+		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(30, (int) ground.getCollider().getBottom() - obstacleSide + shiftY, obstacleSide, 100));
+		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(60, (int) ground.getCollider().getBottom() - obstacleSide + shiftY, obstacleSide, 100));
+		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(90, (int) ground.getCollider().getBottom() - obstacleSide + shiftY, obstacleSide, 100));
+		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(0, (int) ground.getCollider().getBottom() - obstacleSide - 30 + shiftY, obstacleSide, 100));
+		dynFigure.add(ObstacleFactory.dynamicRectangleObstacle(90, (int) ground.getCollider().getBottom() - obstacleSide - 30 + shiftY, obstacleSide, 100));
 		
 		obstacles.addAll(dynFigure);
 		obstacles.addAll(FigureShifter.shiftX(figure1, 250));
@@ -161,8 +162,6 @@ class GameModel {
 				if (insideType) {
 					maxNewPos.setX(collideWith.getCollider().getLeft());
 				} else {
-//					jump();
-					dynCol = colState;
 					maxNewPos.setX(collideWith.getCollider().getRight() + collideWith.getSpeed().getX());
 				}
 			}
@@ -174,12 +173,14 @@ class GameModel {
 		if (colState.getY() != CollisionState.NONE) {
 			if (colState.getY() == CollisionState.BOTTOM) {
 				if (insideType) {
+					System.out.println(1);
 					maxNewPos.setY(collideWith.getCollider().getBottom() - toCollide.getCollider().getHeight());
 				} else {
 					maxNewPos.setY(collideWith.getCollider().getTop() - toCollide.getCollider().getHeight() + collideWith.getSpeed().getY());
 				}
 				if (toCollide instanceof Player) {
-					((Player) toCollide).hitBottom();
+					((Player) toCollide).setAirborne(false);
+					((Player) toCollide).hitBottom(collideWith);
 				} else {
 					toCollide.makeYSpeedZero();
 				}
@@ -196,6 +197,9 @@ class GameModel {
 				}
 			}
 		} else {
+			if (toCollide instanceof Player) {
+				((Player) toCollide).setAirborne(false);
+			}
 //			maxNewPos.setY(maxNewPos.getY() + toCollide.getSpeed().getY());
 			maxNewPos.setY(Integer.MAX_VALUE / 2.0 + 5);
 		}
@@ -243,7 +247,7 @@ class GameModel {
 		// strictly follow the player
 		newCameraPos.setX(camera.getPosition().getX() + (player.getPosition().getX() - playerOldPos.getX()));
 		camera.setPosition(newCameraPos);
-		ground.setPosition(new Vector(ground.getCollider().getPosition().getX() + (player.getPosition().getX() - playerOldPos.getX()), ground.getCollider().getPosition().getY()));
+//		ground.setPosition(new Vector(ground.getCollider().getPosition().getX() + (player.getPosition().getX() - playerOldPos.getX()), ground.getCollider().getPosition().getY()));
 		
 	}
 	
