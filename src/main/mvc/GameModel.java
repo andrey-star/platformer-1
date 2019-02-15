@@ -173,7 +173,6 @@ class GameModel {
 		if (colState.getY() != CollisionState.NONE) {
 			if (colState.getY() == CollisionState.BOTTOM) {
 				if (insideType) {
-					System.out.println(1);
 					maxNewPos.setY(collideWith.getCollider().getBottom() - toCollide.getCollider().getHeight());
 				} else {
 					maxNewPos.setY(collideWith.getCollider().getTop() - toCollide.getCollider().getHeight() + collideWith.getSpeed().getY());
