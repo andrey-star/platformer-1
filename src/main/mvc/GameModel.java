@@ -11,6 +11,7 @@ import java.util.List;
 class GameModel {
 	
 	Player player;
+	Enemy enemy;
 	Ground ground;
 	Camera camera;
 	List<Obstacle> obstacles;
@@ -23,7 +24,8 @@ class GameModel {
 //		int[] ypoints = {height / 2 + 30, height / 2, height / 2 + 30};
 //		Polygon p = new Polygon(xpoints, ypoints, 3);
 //		player = new Player(new BoxCollider(new Vector(width / 3, height / 2), 30, 30), new Vector(0, 0), p, Color.BLACK, new Vector(0.75, 0.75));
-		player = PlayerFactory.standardSquarePlayer(width / 3, height / 2, 30, new Vector(2, 2));
+		player = ReactingObjectFactory.standartSquarePlayer(width / 3, height / 2, 30, new Vector(2, 2));
+		enemy = ReactingObjectFactory.standartSquareEnemy(width - 100, height / 2, 30, 1, 50);
 		camera = new Camera(new Rectangle(0, 0, width, height));
 		ground = new Ground(new BoxCollider(ShapeFactory.rectangle(3, 1, width - 7, height * 2 / 3)), Vector.zero(), PolygonFactory.rectangle(0, 0, width, height), Color.BLACK);
 		obstacles = new ArrayList<>();
@@ -125,7 +127,7 @@ class GameModel {
 		obstacles.addAll(FigureShifter.shift(dynFigure2, new Vector(150, -200)));
 		obstacles.addAll(FigureShifter.shift(dynFigure3, new Vector(300, -200)));
 		obstacles.addAll(FigureShifter.shift(dynFigure4, new Vector(width - 137, 0)));
-		obstacles.addAll(FigureShifter.shift(staticFigure4, new Vector(width - 90, -30)));
+//		obstacles.addAll(FigureShifter.shift(staticFigure4, new Vector(width - 90, -30)));
 		obstacles.addAll(FigureShifter.shift(figure1, new Vector(250, 0)));
 //		obstacles.addAll(FigureShifter.shiftX(figure2, 600));
 //		obstacles.addAll(FigureShifter.shiftX(figure2, 800));
@@ -165,6 +167,10 @@ class GameModel {
 		for (Obstacle obstacle : obstacles) {
 			checkObject(obstacle);
 		}
+	}
+	
+	private void checkEnemy() {
+		checkObject(enemy);
 	}
 	
 	private void checkPlayer() {
@@ -242,6 +248,15 @@ class GameModel {
 					maxShift.setY(curMaxShift.getY());
 				}
 			}
+			//max enenmy shift
+			Vector curMaxShift = getAvailableShift(gameObject, enemy);
+			if (Math.abs(maxShift.getX()) > Math.abs(curMaxShift.getX())) {
+				maxShift.setX(curMaxShift.getX());
+			}
+			if (Math.abs(maxShift.getY()) > Math.abs(curMaxShift.getY())) {
+				maxShift.setY(curMaxShift.getY());
+			}
+			// some random stuff
 			if (maxShift.getX() > Integer.MAX_VALUE / 4.0) {
 				maxShift.setX(player.getSpeed().getX());
 			}
@@ -252,6 +267,8 @@ class GameModel {
 					player.getPosition().getY() + maxShift.getY()));
 		} else if (gameObject instanceof DynamicObstacle) {
 			((DynamicObstacle) gameObject).updateSpeed();
+		} else if (gameObject instanceof Enemy) {
+			((Enemy) gameObject).updateSpeed();
 		}
 	}
 	
@@ -259,6 +276,7 @@ class GameModel {
 		for (Obstacle obstacle : obstacles) {
 			obstacle.applySpeed();
 		}
+		enemy.applySpeed();
 		Vector playerOldPos = player.getPosition().copyOf();
 		player.setPosition(player.getRealShift().copyOf());
 		Vector newCameraPos = new Vector(0, 0);
@@ -278,6 +296,7 @@ class GameModel {
 		System.err.print("");
 		checkObstacles();
 		checkPlayer();
+		checkEnemy();
 		applyShift();
 		System.err.print("");
 	}

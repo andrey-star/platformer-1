@@ -43,6 +43,7 @@ public class GameView extends JFrame {
 		drawGround();
 		drawObstacles();
 		drawCamera();
+		drawEnemy();
 		drawPlayer();
 		g2.drawImage(image, 0, 0, null);
 	}
@@ -56,16 +57,16 @@ public class GameView extends JFrame {
 	}
 	
 	private void drawObstacles() {
+		Color prev = g.getColor();
 		for (Obstacle obstacle : model.obstacles) {
 			if (!model.camera.isInView(obstacle.getCollider().getRectangle())) {
 				continue;
 			}
-			Color prev = g.getColor();
 			double shift = -(model.camera.getPosition().getX());
 			fillPolygonWithShift(obstacle, new Vector(shift, 0));
 			drawColliderWithShift(obstacle, new Vector(shift, 0));
-			g.setColor(prev);
 		}
+		g.setColor(prev);
 	}
 	
 	private void drawGround() {
@@ -81,6 +82,14 @@ public class GameView extends JFrame {
 		double shift = -(model.camera.getPosition().getX());
 		fillPolygonWithShift(model.player, new Vector(shift, 0));
 		drawColliderWithShift(model.player, new Vector(shift, 0));
+		g.setColor(prev);
+	}
+	
+	private void drawEnemy() {
+		Color prev = g.getColor();
+		double shift = -(model.camera.getPosition().getX());
+		fillPolygonWithShift(model.enemy, new Vector(shift, 0));
+		drawColliderWithShift(model.enemy, new Vector(shift, 0));
 		g.setColor(prev);
 	}
 	
