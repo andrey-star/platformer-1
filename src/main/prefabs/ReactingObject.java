@@ -11,23 +11,18 @@ public abstract class ReactingObject extends CollidableGameObject {
 	private Vector verSpeed;
 	private Vector realShift;
 	
-	private boolean airborne = false;
 	private double jumpForce = 7.5;
 	
 	public ReactingObject(BoxCollider collider, Vector speed, Polygon polygon, Color color){
 		super(collider, speed, polygon, color);
-//		this.jumpForce = jumpForce;
 		verSpeed = Vector.zero();
 		obstacleSpeed = Vector.zero();
 	}
 	
 	public void jump() {
-//		if (!airborne) {
 		verSpeed.setY(-jumpForce);
 		applySpeeds();
-		airborne = true;
 		applyBottomObjectSpeed(Vector.zero());
-//		}
 	}
 	
 	public Vector getVerSpeed(){
@@ -36,10 +31,6 @@ public abstract class ReactingObject extends CollidableGameObject {
 	
 	public  Vector getObstacleSpeed(){
 		return obstacleSpeed;
-	}
-	
-	public void setAirborne(boolean isAirborne) {
-		airborne = isAirborne;
 	}
 	
 	public Vector getRealShift() {
